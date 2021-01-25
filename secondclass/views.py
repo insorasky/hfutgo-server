@@ -1,6 +1,7 @@
 from django.http import JsonResponse as Json
 import requests
 import json
+from student import Student
 
 
 def sc(method, userid, url, params=None, json_data=None):
@@ -75,9 +76,9 @@ def rank(request):
 
 def projects(request):
     urls = {
-            'applying': 'https://dekt.hfut.edu.cn/scReports/api/wx/item/getApplyingItemList/',
-            'waiting': 'https://dekt.hfut.edu.cn/scReports/api/wx/item/getWaitItemList/',
-            'end': 'https://dekt.hfut.edu.cn/scReports/api/wx/item/getEndItemList/'
+        'applying': 'https://dekt.hfut.edu.cn/scReports/api/wx/item/getApplyingItemList/',
+        'waiting': 'https://dekt.hfut.edu.cn/scReports/api/wx/item/getWaitItemList/',
+        'end': 'https://dekt.hfut.edu.cn/scReports/api/wx/item/getEndItemList/'
     }
     data = sc('POST', request.GET['id'], urls[request.GET['type']] + '1/100000',
               json_data={
@@ -107,7 +108,6 @@ def projects(request):
 
 def info(request):
     data = sc('POST', request.GET['id'], 'https://dekt.hfut.edu.cn/scReports/api/wx/activedetail/' + request.GET['pid'])
-    print(data)
     if data['code'] != '200':
         return Json({
             'code': data['code']
@@ -138,4 +138,69 @@ def info(request):
             'fullnum': (data['data']['teamNum'] if data['data']['applyWay'] else data['data']['peopleNum']),
             'teamsize': (data['data']['teamSize'] if data['data']['applyWay'] else None),
             'content': data['data']['content']
+        })
+
+
+def my_projects(request):
+    urls = {
+        'waiting': 'https://dekt.hfut.edu.cn/scReports/api/wx/item/getMyApplyItems/1/10000',
+        'end': 'https://dekt.hfut.edu.cn/scReports/api/wx/item/getMyApplyItemsEnd/1/10000'
+    }
+    id = request.GET['id']
+    data = sc('GET', id, 'https://dekt.hfut.edu.cn/scReports/api/wx/report/getUserScore')
+    if data['code'] == '1005':
+        return Json({
+            'code': -2
+        })
+    elif data['code'] == '200':
+        if data['data']['userName'] == request.GET['name']:
+            userinfo = sc('POST', id, urls[request.GET['type']])
+            items = []
+            if userinfo['count'] != 0:
+                for item in userinfo['list']:
+                    items.append({
+                        'id': item['id'],
+                        'name': item['name'],
+                        'organizer': item['organizer']
+                    })
+            return Json({
+                'code': 1,
+                'list': items
+            })
+        else:
+            return Json({
+                'code': -1
+            })
+    else:
+        return Json({
+            'code': -3
+        })
+
+
+def register(request):
+    s = Student(request.GET['vpn_token'], request.GET['at_token'])
+    userinfo = s.userinfo
+    data = sc('POST', userinfo['loginName'], 'https://dekt.hfut.edu.cn/scReports/api/wx/activedetail/enter/' + request.GET['id'])
+    if data['data']:
+        return Json({
+            'status': 200
+        })
+    else:
+        return Json({
+            'status': 1,
+            'message': data['errMsg']
+        })
+
+
+def unregister(request):
+    s = Student(request.GET['vpn_token'], request.GET['at_token'])
+    userinfo = s.userinfo
+    data = sc('POST', userinfo['loginName'], 'https://dekt.hfut.edu.cn/scReports/api/wx/activedetail/cancellRegistration/' + request.GET['id'])
+    if data['data']:
+        return Json({
+            'status': 200
+        })
+    else:
+        return Json({
+            'status': 1
         })

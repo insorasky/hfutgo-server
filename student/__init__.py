@@ -1,10 +1,12 @@
 import requests
 from requests.utils import add_dict_to_cookiejar, dict_from_cookiejar
 import json
-from ECBPkcs7 import ECBPkcs7
+from .ECBPkcs7 import ECBPkcs7
+from .VPNUrl import encrypUrl
 
-URL_CAS_BASE = 'https://webvpn.hfut.edu.cn/https/77726476706e69737468656265737421f3f652d22f367d44300d8db9d6562d'
-URL_ONE_BASE = 'https://webvpn.hfut.edu.cn/https/77726476706e69737468656265737421fff944d22f367d44300d8db9d6562d'
+URL_VPN_BASE = 'https://webvpn.hfut.edu.cn'
+URL_CAS_BASE = URL_VPN_BASE + '/https/77726476706e69737468656265737421f3f652d22f367d44300d8db9d6562d'
+URL_ONE_BASE = URL_VPN_BASE + '/https/77726476706e69737468656265737421fff944d22f367d44300d8db9d6562d'
 URL_PAGE = URL_CAS_BASE + '/cas/login'
 URL_VERCODE = URL_CAS_BASE + '/cas/vercode'
 URL_LOGIN_FLAVORING = URL_CAS_BASE + '/cas/checkInitVercode'
@@ -28,7 +30,7 @@ class Student:
         if ticket is not None:
             add_dict_to_cookiejar(self.session.cookies, {TICKET_NAME: ticket})
         if at_token is not None:
-            __at = at_token
+            self.__at = at_token
 
     @property
     def ticket(self):
@@ -79,10 +81,10 @@ class Student:
         # 获取OC令牌
         data = self.session.get(URL_GET_OC).text
         if 'Central Authentication Service' not in data:
-            return -3
+            return -2
         data = self.session.get(URL_GET_OC, allow_redirects=False)
         if data.status_code != 302:
-            return -4
+            return -3
         oc = data.headers['Location'].split('=')[1]
         # 验证OC令牌
         self.session.get(URL_VERIFY_OC)
@@ -93,19 +95,25 @@ class Student:
             'code': oc
         }).text)
         if data['data'] is None:
-            return -5
+            return -4
         self.__at = data['data']['access_token']
         return True
 
-    def request(self, url, method='GET', params=None, data=None, headers=None, allow_redirects=True):
-        return self.session.request(method=method, url=url, params=params, data=data,
+    def request(self, url, method='GET', params=None, data=None, headers={}, allow_redirects=True):
+        url = url if url[0] == '/' else encrypUrl(url.split('://')[0], url)
+        if '77726476706e69737468656265737421fff944d22f367d44300d8db9d6562d' in url:
+            headers.update({'Authorization': 'Bearer ' + self.__at})
+        return self.session.request(method=method, url=URL_VPN_BASE + url, params=params, data=data,
                                     headers=headers, allow_redirects=allow_redirects)
 
     @property
     def userinfo(self):
-        return json.loads(self.session.get(URL_USERINFO, headers={
-            'Authorization': 'Bearer ' + self.__at
-        }).text)['data']
+        try:
+            return json.loads(self.session.get(URL_USERINFO, headers={
+                'Authorization': 'Bearer ' + self.__at
+            }).text)['data'] if self.__at else None
+        except json.decoder.JSONDecodeError:
+            return None
 
     @property
     def is_login(self):
@@ -123,4 +131,7 @@ class Student:
 
     @property
     def vpn_token(self):
-        return dict_from_cookiejar(self.session.cookies)[TICKET_NAME]
+        try:
+            return dict_from_cookiejar(self.session.cookies)[TICKET_NAME]
+        except KeyError:
+            return None
