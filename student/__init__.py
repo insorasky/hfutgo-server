@@ -5,12 +5,13 @@ from .ECBPkcs7 import ECBPkcs7
 from .VPNUrl import encrypUrl
 
 URL_VPN_BASE = 'https://webvpn.hfut.edu.cn'
+TICKET_NAME = 'wengine_vpn_ticketwebvpn_hfut_edu_cn'
 URL_CAS_BASE = URL_VPN_BASE + '/https/77726476706e69737468656265737421f3f652d22f367d44300d8db9d6562d'
 URL_ONE_BASE = URL_VPN_BASE + '/https/77726476706e69737468656265737421fff944d22f367d44300d8db9d6562d'
 URL_PAGE = URL_CAS_BASE + '/cas/login'
 URL_VERCODE = URL_CAS_BASE + '/cas/vercode'
 URL_LOGIN_FLAVORING = URL_CAS_BASE + '/cas/checkInitVercode'
-URL_COOKIE = 'https://webvpn.hfut.edu.cn/wengine-vpn/cookie?method=get&host=cas.hfut.edu.cn&scheme=http&path=/cas/login'
+URL_COOKIE = URL_VPN_BASE + '/wengine-vpn/cookie?method=get&host=cas.hfut.edu.cn&scheme=http&path=/cas/login'
 URL_CHECK = URL_CAS_BASE + '/cas/policy/checkUserIdenty'
 URL_LOGIN = URL_CAS_BASE + '/cas/login?service=https%3A%2F%2Fwebvpn.hfut.edu.cn%2Flogin%3Fcas_login%3Dtrue'
 URL_VPN_LOGIN = URL_CAS_BASE + '/cas/login?service=https%3A%2F%2Fwebvpn.hfut.edu.cn%2Flogin%3Fcas_login%3Dtrue'
@@ -19,7 +20,6 @@ URL_VERIFY_OC = URL_ONE_BASE + '/Login'
 URL_GET_AT = URL_ONE_BASE + '/api/auth/oauth/getToken'
 URL_VERIFY_AT = URL_ONE_BASE + '/cas/bosssoft/checkToken'
 URL_USERINFO = URL_ONE_BASE + '/api/center/user/selectUserInfoForHall'
-TICKET_NAME = 'wengine_vpn_ticketwebvpn_hfut_edu_cn'
 
 
 class Student:

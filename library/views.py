@@ -1,3 +1,4 @@
-from django.shortcuts import render
-
-# Create your views here.
+from student import Student
+from bs4 import BeautifulSoup
+import json
+import re
