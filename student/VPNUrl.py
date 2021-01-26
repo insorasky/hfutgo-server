@@ -10,15 +10,8 @@ def AES_128_CFB(String):
     return ciphertext
 
 
-def AES_128_CFB_decode(String):
-    decode = String.decode('hex')
-    cryptor = AES.new(key=key.encode('utf-8'), mode=AES.MODE_CFB, IV=iv.encode('utf-8'), segment_size=128)
-    plain_text = cryptor.decrypt(decode.encode('utf-8'))
-    return plain_text
-
-
 def textRightAppend(text, mode):
-    segmentByteSize = 16 if mode == 'utf8' else 32
+    segmentByteSize = 16 if mode == 'utf-8' else 32
     if len(text) % segmentByteSize == 0:
         return text
     appendLength = segmentByteSize - len(text) % segmentByteSize
@@ -31,7 +24,7 @@ def textRightAppend(text, mode):
 
 def encrypt(text):
     textLength = len(text)
-    text = textRightAppend(text, 'utf8')
+    text = textRightAppend(text, 'utf-8')
     encryptBytes = AES_128_CFB(text).hex()
     return iv.encode().hex() + encryptBytes[0: textLength * 2]
 
