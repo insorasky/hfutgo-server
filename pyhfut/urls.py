@@ -9,5 +9,6 @@ urlpatterns = [
     path('cas/', include('cas.urls'), name='cas'),
     path('card/', include('card.urls'), name='card'),
     path('utils/', include('utils.urls'), name='utils'),
-    path('library/', include('library.urls'), name='library')
+    path('library/', include('library.urls'), name='library'),
+    path('jwgl/', include('jwgl.urls'), name='jwgl'),
 ]

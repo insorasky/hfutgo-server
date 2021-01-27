@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'wash',
     'utils',
+    'jwgl',
 ]
 
 MIDDLEWARE = [
