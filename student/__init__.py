@@ -25,6 +25,7 @@ URL_USERINFO = URL_ONE_BASE + '/api/center/user/selectUserInfoForHall'
 class Student:
     session = requests.session()
     __at = None
+    __boss_ticket = None
 
     def __init__(self, ticket=None, at_token=None):
         if ticket is not None:
@@ -65,6 +66,7 @@ class Student:
         }).text)
         if 'authTicket' not in data['data']:
             return -1
+        self.__boss_ticket = data['data']['authTicket']
         # CAS登录
         data = self.session.post(URL_LOGIN, data={
             'username': username,
@@ -126,6 +128,10 @@ class Student:
             return data['data']
         except requests.exceptions.RequestException:
             return False
+
+    @property
+    def boss_ticket(self):
+        return self.__boss_ticket
 
     @property
     def at_token(self):

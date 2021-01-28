@@ -6,7 +6,7 @@ import json
 def login(request):
     student = Student()
     status = student.login(request.GET['username'], request.GET['password'])
-    if status:
+    if status is True:
         info = student.userinfo
         return JsonResponse({
             'code': 200,
@@ -14,6 +14,11 @@ def login(request):
             'at_token': student.at_token,
             'class': info['orgName'],
             'name': info['xm']
+        })
+    elif status == -2:
+        return JsonResponse({
+            'code': status,
+            'boss_ticket': student.boss_ticket
         })
     else:
         return JsonResponse({
