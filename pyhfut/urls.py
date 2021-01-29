@@ -11,4 +11,5 @@ urlpatterns = [
     path('utils/', include('utils.urls'), name='utils'),
     path('library/', include('library.urls'), name='library'),
     path('jwgl/', include('jwgl.urls'), name='jwgl'),
+    path('channel/', include('channel.urls'), name='channel')
 ]
