@@ -18,7 +18,8 @@ def login(request):
     elif status == -2:
         return JsonResponse({
             'code': status,
-            'boss_ticket': student.boss_ticket
+            'boss_ticket': student.boss_ticket,
+            'vpn_token': student.vpn_token
         })
     else:
         return JsonResponse({

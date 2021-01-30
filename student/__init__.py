@@ -4,8 +4,9 @@ import json
 from .ECBPkcs7 import ECBPkcs7
 from .VPNUrl import encrypUrl
 
-URL_VPN_BASE = 'https://webvpn.hfut.edu.cn'
-TICKET_NAME = 'wengine_vpn_ticketwebvpn_hfut_edu_cn'
+VPN_DOMAIN = 'webvpn.hfut.edu.cn'
+URL_VPN_BASE = 'https://' + VPN_DOMAIN
+TICKET_NAME = 'wengine_vpn_ticket' + VPN_DOMAIN.replace('.', '_')
 URL_CAS_BASE = URL_VPN_BASE + '/https/77726476706e69737468656265737421f3f652d22f367d44300d8db9d6562d'
 URL_ONE_BASE = URL_VPN_BASE + '/https/77726476706e69737468656265737421fff944d22f367d44300d8db9d6562d'
 URL_PAGE = URL_CAS_BASE + '/cas/login'
@@ -13,13 +14,13 @@ URL_VERCODE = URL_CAS_BASE + '/cas/vercode'
 URL_LOGIN_FLAVORING = URL_CAS_BASE + '/cas/checkInitVercode'
 URL_COOKIE = URL_VPN_BASE + '/wengine-vpn/cookie?method=get&host=cas.hfut.edu.cn&scheme=http&path=/cas/login'
 URL_CHECK = URL_CAS_BASE + '/cas/policy/checkUserIdenty'
-URL_LOGIN = URL_CAS_BASE + '/cas/login?service=https%3A%2F%2Fwebvpn.hfut.edu.cn%2Flogin%3Fcas_login%3Dtrue'
-URL_VPN_LOGIN = URL_CAS_BASE + '/cas/login?service=https%3A%2F%2Fwebvpn.hfut.edu.cn%2Flogin%3Fcas_login%3Dtrue'
+URL_LOGIN = URL_CAS_BASE + '/cas/login?service=https%3A%2F%2F' + VPN_DOMAIN + '%2Flogin%3Fcas_login%3Dtrue'
+URL_VPN_LOGIN = URL_CAS_BASE + '/cas/login?service=https%3A%2F%2F' + VPN_DOMAIN + '%2Flogin%3Fcas_login%3Dtrue'
 URL_GET_OC = URL_CAS_BASE + '/cas/oauth2.0/authorize?response_type=code&client_id=BsHfutEduPortal&redirect_uri=https://one.hfut.edu.cn/Login'
 URL_VERIFY_OC = URL_ONE_BASE + '/Login'
 URL_GET_AT = URL_ONE_BASE + '/api/auth/oauth/getToken'
 URL_VERIFY_AT = URL_ONE_BASE + '/cas/bosssoft/checkToken'
-URL_USERINFO = URL_ONE_BASE + '/api/center/user/selectUserInfoForHall'
+URL_USERINFO = 'https://one.hfut.edu.cn/api/center/user/selectUserInfoForHall'
 
 
 class Student:
@@ -101,7 +102,9 @@ class Student:
         self.__at = data['data']['access_token']
         return True
 
-    def request(self, url, method='GET', params=None, data=None, headers={}, allow_redirects=True):
+    def request(self, url, method='GET', params=None, data=None, headers=None, allow_redirects=True):
+        if headers is None:
+            headers = {}
         url = url if url[0] == '/' else encrypUrl(url.split('://')[0], url)
         if '77726476706e69737468656265737421fff944d22f367d44300d8db9d6562d' in url:
             headers.update({'Authorization': 'Bearer ' + self.__at})
@@ -113,16 +116,14 @@ class Student:
     @property
     def userinfo(self):
         try:
-            return json.loads(self.session.get(URL_USERINFO, headers={
-                'Authorization': 'Bearer ' + self.__at
-            }).text)['data'] if self.__at else None
+            return json.loads(self.request(URL_USERINFO).text)['data'] if self.__at else None
         except json.decoder.JSONDecodeError:
             return None
 
     @property
     def is_login(self):
         try:
-            data = json.loads(self.session.get(URL_VERIFY_AT, params={
+            data = json.loads(self.request(URL_VERIFY_AT, params={
                 'token': self.__at
             }).text)
             return data['data']
