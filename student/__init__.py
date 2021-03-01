@@ -29,6 +29,9 @@ class Student:
     __boss_ticket = None
 
     def __init__(self, ticket=None, at_token=None):
+        self.session = requests.session()
+        self.__at = None
+        self.__boss_ticket = None
         if ticket is not None:
             add_dict_to_cookiejar(self.session.cookies, {TICKET_NAME: ticket})
         if at_token is not None:
@@ -65,7 +68,7 @@ class Student:
             'username': username,
             'password': password
         }).text)
-        if 'authTicket' not in data['data']:
+        if 'authTicket' not in data['data']:  # 密码错误
             return -1
         self.__boss_ticket = data['data']['authTicket']
         # CAS登录
