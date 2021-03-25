@@ -25,7 +25,23 @@ def info(request):
     })
 
 
-def details(request):
+def details_today(request):
+    student = Student(request.GET['vpn_token'], request.GET['at_token'])
+    data = student.request('http://172.31.248.20/accounttodatTrjnObject.action',
+                           method='POST',
+                           params={
+                               'account': request.GET['account_id'],
+                               'inputObject': 'all'
+                           })
+    detail = get_details_from_html(data)
+    return JsonResponse({
+        'current_page': int(request.GET['page']),
+        'page_count': detail.pages,
+        'details': detail.details
+    })
+
+
+def details_past(request):
     student = Student(request.GET['vpn_token'], request.GET['at_token'])
     today = datetime.date.today()
     one_month_ago = today - datetime.timedelta(days=31)
@@ -52,8 +68,16 @@ def details(request):
                                'inputEndDate': today.strftime('%Y%m%d'),
                                'pageNum': request.GET['page']
                            }).text
+    detail = get_details_from_html(data)
+    return JsonResponse({
+        'current_page': int(request.GET['page']),
+        'page_count': detail.pages,
+        'details': detail.details
+    })
+
+
+def get_details_from_html(data):
     soup = BeautifulSoup(data, 'lxml').select('#tables > tr')
-    pages = int(re.search(r'共([0-9]*)页', data)[1])
     detail = []
     if len(soup) != 2:
         for i in range(1, len(soup) - 2):
@@ -66,12 +90,13 @@ def details(request):
                 'balance': tds[6].text.strip(),
                 'info': tds[9].text.strip()
             })
-    return JsonResponse({
-        'current_page': int(request.GET['page']),
-        'page_count': pages,
-        'details': detail
-    })
 
+    class Details:
+        def __init__(self, pages, details):
+            self.pages = pages
+            self.details = details
+
+    return Details(int(re.search(r'共([0-9]*)页', data)[1]), detail)
 
 def lose(request):
     student = Student(request.GET['vpn_token'], request.GET['at_token'])
@@ -107,7 +132,7 @@ def old_login(request):
     student = Student(request.GET['vpn_token'], request.GET['at_token'])
     data = student.request('/http-8080/77726476706e69737468656265737421e0f4408e237e60566b1cc7a99c406d3657/login.action?'
                            'username=%s&userpwd=%s&randcode=%s&usertype=2&logintype=2' % (
-                           request.GET['account_id'], request.GET['password'], request.GET['code'])).text
+                               request.GET['account_id'], request.GET['password'], request.GET['code'])).text
     if data == 'accloginok!':
         status = True
         message = '登录成功'
@@ -132,7 +157,8 @@ def old_lose_code(request):
 def old_unlose(request):
     student = Student(request.GET['vpn_token'], request.GET['at_token'])
     data = student.request('/http-8080/77726476706e69737468656265737421e0f4408e237e60566b1cc7a99c406d3657/'
-                           'accountunlose.action?account=%s&passwd=%s&captcha=%s' % (request.GET['account_id'], request.GET['password'], request.GET['code'])).text
+                           'accountunlose.action?account=%s&passwd=%s&captcha=%s' % (
+                           request.GET['account_id'], request.GET['password'], request.GET['code'])).text
     data = json.loads(data)
     print(data)
     return JsonResponse({

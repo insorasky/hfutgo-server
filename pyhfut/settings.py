@@ -83,8 +83,10 @@ DATABASES = {
         'NAME': 'hfut',
         'USER': 'root',
         'PASSWORD': 'root',
-        'HOST': '127.0.0.1',
-        'PORT': 3306
+        'OPTIONS': {
+            "unix_socket": "/Applications/MAMP/tmp/mysql/mysql.sock",
+            'charset': 'utf8mb4',
+        }
     }
 }
 
