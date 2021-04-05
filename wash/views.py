@@ -1,24 +1,41 @@
 from django.http import JsonResponse
 from .models import *
 import requests
-import json
+from utils.models import *
 
 
 def qie(request):
     mid = request.GET['mid']
-    data = json.loads(requests.post('https://userapi.qiekj.com/machine/detail',
-                                    params={
-                                        'machineId': mid
-                                    },
-                                    headers={
-                                        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:84.0) Gecko/20100101 Firefox/84.0'
-                                    }).text)['data']
-    if data['status'] == 1:
-        status = '空闲'
-    elif data['status'] == 2:
-        status = '使用中，剩余' + data['remainTime'] + '秒'
+    if mid.len >= 15:
+        data = requests.post('https://userapi.qiekj.com/machine/detail',
+                             params={
+                                 'machineId': mid
+                             },
+                             headers={
+                                 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:84.0) Gecko/20100101 '
+                                               'Firefox/84.0 '
+                             }).json()['data']
+        if data['status'] == 1:
+            status = '空闲'
+        elif data['status'] == 2:
+            status = '使用中，剩余' + data['remainTime'] + '秒'
+        else:
+            status = '未知'
     else:
-        status = '未知'
+        data = requests.post('https://userapi.qiekj.com/goods/normal/details',
+                             params={
+                                 'goodsId': mid
+                             },
+                             headers={
+                                 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:84.0) Gecko/20100101 '
+                                               'Firefox/84.0 '
+                             }).json()['data']
+        if data['deviceErrorCode'] is None:
+            status = '空闲'
+        elif data['deviceErrorCode'] == 2:
+            status = '使用中'
+        else:
+            status = data['deviceErrorMsg']
     return JsonResponse({
         'status': status
     })
@@ -27,11 +44,11 @@ def qie(request):
 def haier(request):
     mid = request.GET['mid']
     ssid = request.GET['ssid']
-    data = json.loads(requests.get('https://www.saywash.com/saywash/WashCallApi/common/laundry/getDeviceInfo.api',
-                                   params={
-                                       'deviceQRCode': mid,
-                                       'ssid': ssid
-                                   }).text)['data']
+    data = requests.get('https://www.saywash.com/saywash/WashCallApi/common/laundry/getDeviceInfo.api',
+                        params={
+                            'deviceQRCode': mid,
+                            'ssid': ssid
+                        }).json()['data']
     if data['status'] == 1:
         status = '空闲'
     elif data['status'] == 2:
@@ -45,14 +62,12 @@ def haier(request):
 
 def ujing(request):
     mid = request.GET['mid']
-    data = json.loads(requests.get('https://u.zhinengxiyifang.cn/api/Devices/getDevicesByCode',
-                                   params={'qrCode': 'http://weixin.qq.com/r/Ej8rM5LElM-rrdZQ92oA?uuid=' + mid}).text)['result']
-    if data[0]['status'] == '0':
-        status = '空闲'
-    else:
-        status = '使用中'
+    token = Util.objects.filter(name='ujing_token').first().value['token']
+    data = requests.post('https://phoenix.ujing.online:443/api/v1/devices/scanWasherCode',
+                         json={'qrCode': mid},
+                         headers={'Authorization': 'Bearer ' + token}).json()
     return JsonResponse({
-        'status': status
+        'status': '空闲' if data['data']['result']['createOrderEnabled'] else '使用中'
     })
 
 
