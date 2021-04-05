@@ -11,8 +11,8 @@ def sc(method, userid, url, params=None, json_data=None):
     if json_data is not None:
         headers.update({'Content-Type': 'application/json'})
         json_data = json.dumps(json_data)
-    data = requests.request(method, url, params=params, headers=headers, data=json_data).text
-    return json.loads(data)
+    data = requests.request(method, url, params=params, headers=headers, data=json_data).json()
+    return data
 
 
 def score(request):

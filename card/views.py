@@ -4,7 +4,6 @@ from bs4 import BeautifulSoup
 import re
 import datetime
 import base64
-import json
 
 
 def info(request):
@@ -158,8 +157,7 @@ def old_unlose(request):
     student = Student(request.GET['vpn_token'], request.GET['at_token'])
     data = student.request('/http-8080/77726476706e69737468656265737421e0f4408e237e60566b1cc7a99c406d3657/'
                            'accountunlose.action?account=%s&passwd=%s&captcha=%s' % (
-                           request.GET['account_id'], request.GET['password'], request.GET['code'])).text
-    data = json.loads(data)
+                           request.GET['account_id'], request.GET['password'], request.GET['code'])).json()
     print(data)
     return JsonResponse({
         'status': (data['error'] == '交易成功'),

@@ -64,10 +64,10 @@ class Student:
             return False
         # CAS验证用户
         password = ECBPkcs7(flavoring).encrypt(password)
-        data = json.loads(self.session.get(URL_CHECK, params={
+        data = self.session.get(URL_CHECK, params={
             'username': username,
             'password': password
-        }).text)
+        }).json()
         if 'authTicket' not in data['data']:  # 密码错误
             return -1
         self.__boss_ticket = data['data']['authTicket']
@@ -95,11 +95,11 @@ class Student:
         # 验证OC令牌
         self.session.get(URL_VERIFY_OC)
         # 获取AT令牌
-        data = json.loads(self.session.get(URL_GET_AT, params={
+        data = self.session.get(URL_GET_AT, params={
             'type': 'portal',
             'redirect': 'https%3A%2F%2Fone.hfut.edu.cn%2FLogin%3Fcode%3D' + oc,
             'code': oc
-        }).text)
+        }).json()
         if data['data'] is None:
             return -4
         self.__at = data['data']['access_token']
@@ -119,16 +119,16 @@ class Student:
     @property
     def userinfo(self):
         try:
-            return json.loads(self.request(URL_USERINFO).text)['data'] if self.__at else None
+            return self.request(URL_USERINFO).json()['data'] if self.__at else None
         except json.decoder.JSONDecodeError:
             return None
 
     @property
     def is_login(self):
         try:
-            data = json.loads(self.request(URL_VERIFY_AT, params={
+            data = self.request(URL_VERIFY_AT, params={
                 'token': self.__at
-            }).text)
+            }).json()
             return data['data']
         except requests.exceptions.RequestException:
             return False

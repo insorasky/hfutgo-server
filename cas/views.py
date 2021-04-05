@@ -1,6 +1,5 @@
 from django.http import JsonResponse
 from student import Student
-import json
 
 
 def login(request):
@@ -47,13 +46,13 @@ def is_login(request):
 def today(request):
     student = Student(request.GET['vpn_token'], request.GET['at_token'])
     info = student.userinfo
-    balance = json.loads(student.request('/https/77726476706e69737468656265737421fff944d22f367d44300d8db9d6562d/api/operation/thirdPartyApi/schoolcard/balance?sno=' + info['loginName']).text)['data']
-    borrow_books = json.loads(student.request('/https/77726476706e69737468656265737421fff944d22f367d44300d8db9d6562d/api/operation/library/getBorrowNum').text)['data']
-    subscribe_books = json.loads(student.request('/https/77726476706e69737468656265737421fff944d22f367d44300d8db9d6562d/api/operation/library/getSubscribeNum').text)['data']
-    emails = json.loads(student.request('/https/77726476706e69737468656265737421fff944d22f367d44300d8db9d6562d/api/center/user/getBindMailList').text)['data']
+    balance = student.request('/https/77726476706e69737468656265737421fff944d22f367d44300d8db9d6562d/api/operation/thirdPartyApi/schoolcard/balance?sno=' + info['loginName']).json()['data']
+    borrow_books = student.request('/https/77726476706e69737468656265737421fff944d22f367d44300d8db9d6562d/api/operation/library/getBorrowNum').json()['data']
+    subscribe_books = student.request('/https/77726476706e69737468656265737421fff944d22f367d44300d8db9d6562d/api/operation/library/getSubscribeNum').json()['data']
+    emails = student.request('/https/77726476706e69737468656265737421fff944d22f367d44300d8db9d6562d/api/center/user/getBindMailList').json()['data']
     unread_email = 0
     for email in emails:
-        unread_email += json.loads(student.request('/https/77726476706e69737468656265737421fff944d22f367d44300d8db9d6562d/api/msg/mailBusiness/getUnreadMsg?mail=' + email['mail']).text)['data']
+        unread_email += student.request('/https/77726476706e69737468656265737421fff944d22f367d44300d8db9d6562d/api/msg/mailBusiness/getUnreadMsg?mail=' + email['mail']).json()['data']
     return JsonResponse({
         'balance': balance,
         'borrow_books': borrow_books,

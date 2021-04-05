@@ -74,8 +74,8 @@ def book_search(request):
             "pageCount": int(request.GET['page']),
             "locale": "zh_CN",
             "first": True
-        }).text
-    return JsonResponse(json.loads(data))
+        }).json()
+    return JsonResponse(data)
 
 
 def book_info(request):

@@ -1,19 +1,18 @@
 from django.http import JsonResponse
 from student import Student
-import json
 import time
 
 
 def news_list(request):
     student = Student(request.GET['vpn_token'], request.GET['at_token'])
-    token = json.loads(student.request('http://bkzs.hfut.edu.cn/f/ajax_get_csrfToken',
+    token = student.request('http://bkzs.hfut.edu.cn/f/ajax_get_csrfToken',
                                        method='POST',
                                        params={'n': '1'},
                                        headers={
                                            'X-Requested-With': 'XMLHttpRequest',
                                            'X-Requested-Time': str(int(time.time() * 1000))
-                                       }).text)['data']
-    data = json.loads(student.request('http://bkzs.hfut.edu.cn/f/newsCenter/ajax_article_list',
+                                       }).json()['data']
+    data = student.request('http://bkzs.hfut.edu.cn/f/newsCenter/ajax_article_list',
                                       method='POST',
                                       params={
                                           'pageNo': request.GET['page'],
@@ -24,7 +23,7 @@ def news_list(request):
                                           'Csrf-Token': token,
                                           'X-Requested-Time': str(int(time.time() * 1000)),
                                           'X-Requested-With': 'XMLHttpRequest'
-                                      }).text)
+                                      }).json()
     response = []
     for item in data['data']['page']['list']:
         response.append({

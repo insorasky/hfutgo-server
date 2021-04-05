@@ -23,9 +23,12 @@ def semester(request):
 
 def subjects(request):
     student = Student(request.GET['vpn_token'], request.GET['at_token'])
-    stu_id = student.request('http://jxglstu.hfut.edu.cn/eams5-student/for-std/lesson-survey', allow_redirects=False).headers['Location'].split('/')[-1]
-    data = json.loads(student.request(
-        'http://jxglstu.hfut.edu.cn/eams5-student/for-std/lesson-survey/%s/search/%s' % (request.GET['sid'], stu_id)).text)
+    stu_id = \
+    student.request('http://jxglstu.hfut.edu.cn/eams5-student/for-std/lesson-survey', allow_redirects=False).headers[
+        'Location'].split('/')[-1]
+    data = student.request(
+        'http://jxglstu.hfut.edu.cn/eams5-student/for-std/lesson-survey/%s/search/%s' % (
+        request.GET['sid'], stu_id)).json()
     response = []
     for subject in data['forStdLessonSurveySearchVms']:
         tasks = []
@@ -52,9 +55,9 @@ def subjects(request):
 
 def questions(request):
     student = Student(request.GET['vpn_token'], request.GET['at_token'])
-    data = json.loads(student.request(
+    data = student.request(
         'http://jxglstu.hfut.edu.cn/eams5-student/for-std/lesson-survey/start-survey/%s/get-data' % request.GET['id'],
-        headers={'Content-Type': 'application/json;charset=UTF-8'}).text)['survey']
+        headers={'Content-Type': 'application/json;charset=UTF-8'}).json()['survey']
     response = []
     for radio in data['radioQuestions']:
         response.insert(radio['indexNo'], {
@@ -76,70 +79,26 @@ def questions(request):
     })
 
 
-"""
-body = {
-	"surveyAssoc": 4,
-	"lessonSurveyTaskAssoc": 2708458,
-	"radioQuestionAnswers": [{
-		"questionId": "af569edb-b41a-4938-9506-e287cc9e999b",
-		"optionName": "达到目标"
-	}, {
-		"questionId": "4c151e87-c9bd-4383-8d3d-3892a5247c5d",
-		"optionName": "匹配"
-	}, {
-		"questionId": "987aa80d-1ebd-4d03-bc83-2dde3d96b40c",
-		"optionName": "契合"
-	}, {
-		"questionId": "bfd7a6e5-3061-4937-9017-d20f7802acc8",
-		"optionName": "认真"
-	}, {
-		"questionId": "eab05c1a-e27e-45f3-9bd2-c07bc0c782d4",
-		"optionName": "能充分利用教材设计教学方案，并做好教学预设。"
-	}, {
-		"questionId": "7f7ee282-9080-4a76-92a2-8b43e25c5983",
-		"optionName": "能合理地利用现代教育技术手段。"
-	}, {
-		"questionId": "a2f4ef5b-fd4e-43e8-88b7-996d56b65351",
-		"optionName": "能合理地运用多种教学方法。"
-	}, {
-		"questionId": "81ae2f44-7079-4c51-8a14-aaa0b6842c95",
-		"optionName": "能根据教学设计组织教学活动，并对学生进行有效引导 。"
-	}, {
-		"questionId": "3217ed5f-81a4-4888-b256-44bb5dfcacca",
-		"optionName": "学生积极参与教学活动，较好地掌握所学知识和技能，并对其发展产生积极影响。"
-	}, {
-		"questionId": "ef0f7676-b7fe-4466-a557-d8436c3c9767",
-		"optionName": "能根据学生对课堂内容的掌握情况，适当拓展与延伸专业知识，激发学生学习兴趣，并拓展学生的学习视野。"
-	}],
-	"blankQuestionAnswers": [{
-		"questionId": "9641a52e-1c5e-4306-9466-21069e15f939",
-		"content": ""
-	}]
-}
-"""
-
-
 def submit(request):
     body = json.loads(request.body)
     student = Student(request.GET['vpn_token'], request.GET['at_token'])
     student.request('http://jxglstu.hfut.edu.cn/eams5-student/for-std/lesson-survey/start-survey/' + str(
         body['lessonSurveyTaskAssoc']))
-    data = json.loads(student.request('http://jxglstu.hfut.edu.cn/eams5-student/for-std/lesson-survey/check-can-submit',
-                                      method='POST',
-                                      data=body,
-                                      headers={
-                                          'Accept': 'application/json, text/javascript, */*; q=0.01',
-                                          'Content-Type': 'application/json'
-                                      }).text)
+    data = student.request('http://jxglstu.hfut.edu.cn/eams5-student/for-std/lesson-survey/check-can-submit',
+                           method='POST',
+                           data=body,
+                           headers={
+                               'Accept': 'application/json, text/javascript, */*; q=0.01',
+                               'Content-Type': 'application/json'
+                           }).json()
     if data['validateResult']['passed']:
-        data = json.loads(
-            student.request('http://jxglstu.hfut.edu.cn/eams5-student/for-std/lesson-survey/submit-survey',
-                            method='POST',
-                            data=body,
-                            headers={
-                                'Accept': 'application/json, text/javascript, */*; q=0.01',
-                                'Content-Type': 'application/json'
-                            }).text)
+        data = student.request('http://jxglstu.hfut.edu.cn/eams5-student/for-std/lesson-survey/submit-survey',
+                               method='POST',
+                               data=body,
+                               headers={
+                                   'Accept': 'application/json, text/javascript, */*; q=0.01',
+                                   'Content-Type': 'application/json'
+                               }).json()
         if 'status' in data:
             return JsonResponse({
                 'status': False,
