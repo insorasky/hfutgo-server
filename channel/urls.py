@@ -1,6 +1,6 @@
 from django.urls import path, include
-from . import views
 urlpatterns = [
-    path('channels/', include('channel.channels'), name='channel_channels'),
-    path('viewers/', include('channel.viewers'), name='channel_viewers'),
+    path('channels/', include('channel.channels.url'), name='channel_channels'),
+    path('viewers/', include('channel.viewers.urls'), name='channel_viewers'),
+    path('attachments/', include('channel.attachments.urls'), name='channel_attachments'),
 ]

@@ -6,10 +6,10 @@ urlpatterns = [
     path('admin/', admin.site.urls, name='admin'),
     path('wash/', include('wash.urls'), name='wash'),
     path('sc/', include('secondclass.urls'), name='sc'),
-    path('cas/', include('cas.urls'), name='cas'),
+    path('user/', include('user.urls'), name='user'),
     path('card/', include('card.urls'), name='card'),
-    path('utils/', include('utils.urls'), name='utils'),
+    path('others/', include('utils.urls'), name='others'),
     path('library/', include('library.urls'), name='library'),
-    path('jwgl/', include('jwgl.urls'), name='jwgl'),
+    path('eduadmin/', include('jwgl.urls'), name='eduadmin'),
     path('channel/', include('channel.urls'), name='channel')
 ]

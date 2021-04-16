@@ -1,9 +1,7 @@
-# 合工大超级导航后端 Django重置版
+# HFUTGo 后端
 ![Python Version](https://img.shields.io/badge/Python-3.5+-green.svg)
 ![MySQL Version](https://img.shields.io/badge/MySQL-5.7+-green.svg)
 ![HFUT Student's Grade](https://img.shields.io/badge/HFUT-2017+-yellow.svg)
-
-因为ThinkPHP实在是太冗杂了，而且PHP实在是不适合做爬虫，加上新CAS和新信息门户的启用以及有加入新功能的计划，故决定重置并开源，目前正在开发中。
 
 ### 已完成的功能：
 - 洗衣机查询（企鹅洗衣、海尔云洗衣、美的U净洗衣）
