@@ -1,2 +1,7 @@
 # 项目排除路径
 /venv_mac/
+/.idea/
+
+# Python #
+*.py[cod]
+*$py.class
