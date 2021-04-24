@@ -2,6 +2,9 @@
 /venv_mac/
 /.idea/
 
-# Python #
+# Python
 *.py[cod]
 *$py.class
+
+# macOS
+.DS_Store
