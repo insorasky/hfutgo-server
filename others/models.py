@@ -1,7 +1,7 @@
 from django.db import models
 
 
-class Util(models.Model):
+class Config(models.Model):
     name = models.TextField()
     value = models.JSONField()
     time = models.DateTimeField(auto_now_add=True)

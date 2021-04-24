@@ -1,7 +1,7 @@
-from student.StudentRequest import StudentRequest, get_json_response
+from utils.Request import Request, get_json_response
 
 
-class OldLogin(StudentRequest):
+class OldLogin(Request):
     def get(self, request):
         super(OldLogin, self).get(request)
         data = self.stu.request(

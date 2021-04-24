@@ -1,8 +1,8 @@
 from django.urls import path, include
-from . import apis
+from .apis import *
 urlpatterns = [
-    path('login', apis.login),
-    path('is_login', apis.is_login),
-    path('today', apis.today),
-    path('newuser/', include('user.newuser'))
+    path('login', Login.as_view()),
+    path('is_login', Status.as_view()),
+    path('today', Today.as_view()),
+    path('newuser/', include('user.newuser.urls'))
 ]

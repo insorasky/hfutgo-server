@@ -1,8 +1,8 @@
-from student.StudentRequest import StudentRequest, get_json_response
+from utils.Request import Request, get_json_response
 from .get_details_from_html import get_details_from_html
 
 
-class DetailsToday(StudentRequest):
+class DetailsToday(Request):
     def get(self, request):
         super(DetailsToday, self).get(request)
         data = self.stu.request('http://172.31.248.20/accounttodatTrjnObject.action',

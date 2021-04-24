@@ -1,9 +1,9 @@
 from django.urls import path
-from . import views
+from .apis import *
 urlpatterns = [
-    path('qie', views.qie, name='qie'),
-    path('haier', views.haier, name='haier'),
-    path('ujing', views.ujing, name='ujing'),
-    path('buildings', views.buildings, name='buildings'),
-    path('machines', views.machines, name='machines')
+    path('qie', Qie.as_view(), name='qie'),
+    path('haier', Haier.as_view(), name='haier'),
+    path('ujing', Ujing.as_view(), name='ujing'),
+    path('buildings', Buildings.as_view(), name='buildings'),
+    path('machines', Machines.as_view(), name='machines')
 ]

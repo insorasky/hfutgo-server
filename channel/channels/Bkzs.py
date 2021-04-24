@@ -1,8 +1,8 @@
-from student.StudentRequest import StudentRequest, get_json_response
+from utils.Request import Request, get_json_response
 import time
 
 
-class Bkzs(StudentRequest):
+class Bkzs(Request):
     def get(self, request):
         super(Bkzs, self).get(request)
         token = self.stu.request('http://bkzs.hfut.edu.cn/f/ajax_get_csrfToken',

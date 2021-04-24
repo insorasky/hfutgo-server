@@ -1,9 +1,9 @@
-from student.StudentRequest import StudentRequest, get_json_response
+from utils.Request import Request, get_json_response
 from .get_details_from_html import get_details_from_html
 import datetime
 
 
-class DetailsPast(StudentRequest):
+class DetailsPast(Request):
     def get(self, request):
         super(DetailsPast, self).get(request)
         today = datetime.date.today()

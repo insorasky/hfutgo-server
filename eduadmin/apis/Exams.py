@@ -1,8 +1,8 @@
-from student.StudentRequest import StudentRequest, get_json_response
+from utils.Request import Request, get_json_response
 from bs4 import BeautifulSoup
 
 
-class Exams(StudentRequest):
+class Exams(Request):
     def get(self, request):
         super(Exams, self).get(request)
         self.stu.request('http://jxglstu.hfut.edu.cn/eams5-student/neusoft-sso/login')

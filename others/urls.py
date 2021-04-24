@@ -1,7 +1,7 @@
 from django.urls import path
-from . import views
+from .apis import *
 
 urlpatterns = [
-    path('timetable', views.timetable, name='utils_timetable'),
-    path('notice', views.notice, name='utils_notice')
+    path('timetable', TimeTable.as_view(), name='utils_timetable'),
+    path('notice', Notice.as_view(), name='utils_notice')
 ]

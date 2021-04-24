@@ -1,8 +1,8 @@
-from student.StudentRequest import StudentRequest, get_json_response
+from utils.Request import Request, get_json_response
 import base64
 
 
-class OldLoginCode(StudentRequest):
+class OldLoginCode(Request):
     def get(self, request):
         super(OldLoginCode, self).get(request)
         data = self.stu.request(

@@ -1,9 +1,9 @@
-from student.StudentRequest import StudentRequest, get_json_response
+from utils.Request import Request, get_json_response
 from bs4 import BeautifulSoup
 import re
 
 
-class Info(StudentRequest):
+class Info(Request):
     def get(self, request):
         super(Info, self).get(request)
         self.stu.request('http://172.31.248.20/ahdxdrPortalHome.action')

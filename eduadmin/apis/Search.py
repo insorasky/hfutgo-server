@@ -1,10 +1,10 @@
-from student.StudentRequest import StudentRequest, get_json_response
+from utils.Request import Request, get_json_response
 from ..models import Lesson
 import json
 from django.core.paginator import Paginator
 
 
-class Search(StudentRequest):
+class Search(Request):
     def get(self, request):
         super(Search, self).get(request)
         data = json.loads(request.body)

@@ -1,11 +1,11 @@
 from django.urls import path
-from . import views
+from .apis import *
 urlpatterns = [
-    path('score', views.score, name='sc_score'),
-    path('rank', views.rank, name='sc_rank'),
-    path('list', views.projects, name='sc_list'),
-    path('info', views.info, name='sc_info'),
-    path('my_projects', views.my_projects, name='sc_my'),
-    path('register', views.register, name='sc_reg'),
-    path('unregister', views.unregister, name='sc_unreg')
+    path('score', Score.as_view(), name='sc_score'),
+    path('ranking', Ranking.as_view(), name='sc_rank'),
+    path('list', ProjectList.as_view(), name='sc_list'),
+    path('info', ProjectInfo.as_view(), name='sc_info'),
+    path('my_projects', MyProjects.as_view(), name='sc_my'),
+    path('register', Register.as_view(), name='sc_reg'),
+    path('unregister', UnRegister.as_view(), name='sc_unreg')
 ]

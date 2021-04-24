@@ -1,8 +1,8 @@
-from student.StudentRequest import StudentRequest, get_json_response
+from utils.Request import Request, get_json_response
 from bs4 import BeautifulSoup
 
 
-class Lose(StudentRequest):
+class Lose(Request):
     def get(self, request):
         super(Lose, self).get(request)
         data = self.stu.request('http://172.31.248.20/accountDoLoss.action', method='POST', params={
