@@ -5,7 +5,6 @@ from django.views import View
 
 class Semesters(View):
     def get(self, request, stu, user):
-        stu.request('http://jxglstu.hfut.edu.cn/eams5-student/neusoft-sso/login')
         data = stu.request('http://jxglstu.hfut.edu.cn/eams5-student/for-std/lesson-survey').text
         soup = BeautifulSoup(data, 'lxml').select('#semester > option')
         response = []
