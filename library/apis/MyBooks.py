@@ -1,11 +1,12 @@
-from utils.Request import Request, get_json_response
+from utils.response import get_json_response
+from django.views import View
 from bs4 import BeautifulSoup
 
 
-class MyBooks(Request):
-    def get(self, request):
-        self.stu.request('/http-8080/77726476706e69737468656265737421a2a611d2736526022a5ac7f9/reader/hwthau2.php')
-        data = self.stu.request('/http-8080/77726476706e69737468656265737421a2a611d2736526022a5ac7f9/reader/book_lst.php').text
+class MyBooks(View):
+    def get(self, request, stu):
+        stu.request('/http-8080/77726476706e69737468656265737421a2a611d2736526022a5ac7f9/reader/hwthau2.php')
+        data = stu.request('/http-8080/77726476706e69737468656265737421a2a611d2736526022a5ac7f9/reader/book_lst.php').text
         soup = BeautifulSoup(data, 'lxml').select('.table_line > tr')
         response = []
         first = True

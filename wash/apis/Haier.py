@@ -1,8 +1,9 @@
-from utils.Request import Request, get_json_response
+from utils.response import get_json_response
+from django.views import View
 import requests
 
 
-class Haier(Request):
+class Haier(View):
     def get(self, request):
         mid = request.GET['mid']
         ssid = request.GET['ssid']

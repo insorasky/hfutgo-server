@@ -1,9 +1,12 @@
-from utils.Request import get_json_response, Request
+from utils.response import get_json_response
+from django.views import View
+from utils.Student import Student
 
 
-class VerifyPhone(Request):
+class VerifyPhone(View):
     def get(self, request):
-        data = self.stu.request('https://cas.hfut.edu.cn/cas/policy/loginInfoRecord',
+        stu = Student(request.GET['vpn_ticket'])
+        data = stu.request('https://cas.hfut.edu.cn/cas/policy/loginInfoRecord',
                                 params={
                                     'username': request.GET['username'],
                                     'phoneNumber': request.GET['phone'],

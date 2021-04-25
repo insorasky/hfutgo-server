@@ -1,13 +1,13 @@
-from utils.Request import Request, get_json_response
+from utils.response import get_json_response
 from bs4 import BeautifulSoup
+from django.views import View
 import re
 
 
-class Info(Request):
-    def get(self, request):
-        super(Info, self).get(request)
-        self.stu.request('http://172.31.248.20/ahdxdrPortalHome.action')
-        data = self.stu.request(
+class Info(View):
+    def get(self, request, stu):
+        stu.request('http://172.31.248.20/ahdxdrPortalHome.action')
+        data = stu.request(
             '/http/77726476706e69737468656265737421a1a013d2746126022a50c7fec8/accountcardUser.action').text
         soup = BeautifulSoup(data, 'lxml').select('.tttt > tr:nth-child(1) > th:nth-child(1) > table:nth-child(1)')[0]
         balance_text = soup.select('tr:nth-child(12) > td:nth-child(2)')[0].text

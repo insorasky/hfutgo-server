@@ -1,9 +1,10 @@
-from utils.Request import Request, get_json_response
+from utils.response import get_json_response
+from django.views import View
 import requests
 
 
-class Qie(Request):
-    def get(self, request):
+class Qie(View):
+    def get(self, request, stu):
         mid = request.GET['mid']
         if mid.len >= 15:
             data = requests.post('https://userapi.qiekj.com/machine/detail',

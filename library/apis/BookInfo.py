@@ -1,10 +1,11 @@
-from utils.Request import Request, get_json_response
+from utils.response import get_json_response
 from bs4 import BeautifulSoup
+from django.views import View
 
 
-class BookInfo(Request):
-    def get(self, request):
-        data = self.stu.request('/http-8080/77726476706e69737468656265737421ffe7409f69386e456a468ca88d1b203b/opac/item.php?marc_no=' + request.GET['marc']).text
+class BookInfo(View):
+    def get(self, request, stu):
+        data = stu.request('/http-8080/77726476706e69737468656265737421ffe7409f69386e456a468ca88d1b203b/opac/item.php?marc_no=' + request.GET['marc']).text
         soup = BeautifulSoup(data, 'lxml')
         information = []
         content = ''

@@ -1,10 +1,10 @@
-from utils.Request import Request, get_json_response
+from utils.response import get_json_response
+from django.views import View
 
 
-class Questions(Request):
-    def get(self, request):
-        super(Questions, self).get(request)
-        data = self.stu.request('http://jxglstu.hfut.edu.cn/eams5-student/for-std/lesson-survey/start-survey/%s/get-data' % request.GET['id'], headers={'Content-Type': 'application/json;charset=UTF-8'}).json()['survey']
+class Questions(View):
+    def get(self, request, stu):
+        data = stu.request('http://jxglstu.hfut.edu.cn/eams5-student/for-std/lesson-survey/start-survey/%s/get-data' % request.GET['id'], headers={'Content-Type': 'application/json;charset=UTF-8'}).json()['survey']
         response = []
         for radio in data['radioQuestions']:
             response.insert(radio['indexNo'], {

@@ -1,15 +1,16 @@
-from utils.Request import Request, get_json_response
+from utils.response import get_json_response
+from django.views import View
 
 
-class Status(Request):
-    def get(self, request):
-        status = self.stu.is_login
+class Status(View):
+    def get(self, request, stu):
+        status = stu.is_login
         if status:
-            info = self.stu.userinfo
+            info = stu.userinfo
             return get_json_response({
-                'id': info['loginName'],
-                'class': info['orgName'],
-                'name': info['xm']
+                'id': info.id,
+                'class': info.organization,
+                'name': info.name
             })
         else:
             return get_json_response("登录状态已失效", 3303)

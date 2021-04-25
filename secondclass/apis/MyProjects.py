@@ -1,9 +1,10 @@
-from utils.Request import Request, get_json_response
+from utils.response import get_json_response
+from django.views import View
 from ..request import sc_request
 
 
-class MyProjects(Request):
-    def get(self, request):
+class MyProjects(View):
+    def get(self, request, stu):
         urls = {
             'waiting': 'https://dekt.hfut.edu.cn/scReports/api/wx/item/getMyApplyItems/1/10000',
             'end': 'https://dekt.hfut.edu.cn/scReports/api/wx/item/getMyApplyItemsEnd/1/10000'

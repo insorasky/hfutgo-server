@@ -1,9 +1,10 @@
-from utils.Request import Request, get_json_response
+from utils.response import get_json_response
+from django.views import View
 from ..request import sc_request
 
 
-class Score(Request):
-    def get(self, request):
+class Score(View):
+    def get(self, request, stu):
         data = sc_request('GET', request.GET['id'], 'https://dekt.hfut.edu.cn/scReports/api/wx/report/getUserScore')
         if data['code'] == '1005':
             return get_json_response("用户不存在", 3201)

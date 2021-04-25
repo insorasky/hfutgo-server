@@ -1,12 +1,12 @@
-from utils.Request import Request, get_json_response
+from utils.response import get_json_response
+from django.views import View
 from ..models import Lesson
 import json
 from django.core.paginator import Paginator
 
 
-class Search(Request):
-    def get(self, request):
-        super(Search, self).get(request)
+class Search(View):
+    def get(self, request, stu):
         data = json.loads(request.body)
         filters = data['filters']
         building = ''

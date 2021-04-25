@@ -1,10 +1,11 @@
-from utils.Request import Request, get_json_response
+from utils.response import get_json_response
+from django.views import View
 import requests
 from others.models import Config
 
 
-class Ujing(Request):
-    def get(self, request):
+class Ujing(View):
+    def get(self, request, stu):
         mid = request.GET['mid']
         token = Config.objects.filter(name='ujing_token').first().value['token']
         data = requests.post('https://phoenix.ujing.online:443/api/v1/devices/scanWasherCode',

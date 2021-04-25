@@ -1,12 +1,12 @@
-from utils.Request import Request, get_json_response
+from utils.response import get_json_response
 from bs4 import BeautifulSoup
+from django.views import View
 
 
-class Semesters(Request):
-    def get(self, request):
-        super(Semesters, self).get(request)
-        self.stu.request('http://jxglstu.hfut.edu.cn/eams5-student/neusoft-sso/login')
-        data = self.stu.request('http://jxglstu.hfut.edu.cn/eams5-student/for-std/lesson-survey').text
+class Semesters(View):
+    def get(self, request, stu):
+        stu.request('http://jxglstu.hfut.edu.cn/eams5-student/neusoft-sso/login')
+        data = stu.request('http://jxglstu.hfut.edu.cn/eams5-student/for-std/lesson-survey').text
         soup = BeautifulSoup(data, 'lxml').select('#semester > option')
         response = []
         for option in soup:

@@ -1,11 +1,11 @@
-from utils.Request import Request, get_json_response
+from utils.response import get_json_response
+from django.views import View
 
 
-class Subjects(Request):
-    def get(self, request):
-        super(Subjects, self).get(request)
-        stu_id = self.stu.request('http://jxglstu.hfut.edu.cn/eams5-student/for-std/lesson-survey', allow_redirects=False).headers['Location'].split('/')[-1]
-        data = self.stu.request('http://jxglstu.hfut.edu.cn/eams5-student/for-std/lesson-survey/%s/search/%s' % (request.GET['sid'], stu_id)).json()
+class Subjects(View):
+    def get(self, request, stu):
+        stu_id = stu.request('http://jxglstu.hfut.edu.cn/eams5-student/for-std/lesson-survey', allow_redirects=False).headers['Location'].split('/')[-1]
+        data = stu.request('http://jxglstu.hfut.edu.cn/eams5-student/for-std/lesson-survey/%s/search/%s' % (request.GET['sid'], stu_id)).json()
         response = []
         for subject in data['forStdLessonSurveySearchVms']:
             tasks = []

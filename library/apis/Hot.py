@@ -1,10 +1,11 @@
-from utils.Request import Request, get_json_response
+from utils.response import get_json_response
+from django.views import View
 from bs4 import BeautifulSoup
 
 
-class Hot(Request):
-    def get(self, request):
-        data = self.stu.request(
+class Hot(View):
+    def get(self, request, stu):
+        data = stu.request(
             '/http-8080/77726476706e69737468656265737421a2a611d2736526022a5ac7f9/opac/ajax_top_lend_shelf.php').text
         soup = BeautifulSoup(data, 'lxml').select('ul')
         borrow_list = []

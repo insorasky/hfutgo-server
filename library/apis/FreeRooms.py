@@ -1,10 +1,11 @@
-from utils.Request import Request, get_json_response
+from utils.response import get_json_response
+from django.views import View
 from bs4 import BeautifulSoup
 
 
-class FreeRooms(Request):
-    def room_free(self, request):
-        data = self.stu.request('/http/77726476706e69737468656265737421a2a611d2736526022a5ac7fdca06/roomshow/').text
+class FreeRooms(View):
+    def get(self, request, stu):
+        data = stu.request('/http/77726476706e69737468656265737421a2a611d2736526022a5ac7fdca06/roomshow/').text
         soup = BeautifulSoup(data, 'lxml').select('table > tr')
         response = []
         for tr in soup:

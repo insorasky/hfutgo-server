@@ -1,11 +1,12 @@
-from utils.Request import Request, get_json_response
+from utils.response import get_json_response
+from django.views import View
 import json
 
 
-class Search(Request):
-    def post(self, request):
+class Search(View):
+    def post(self, request, stu):
         filters = json.loads(request.body)['filters']
-        data = self.stu.request(
+        data = stu.request(
             '/http-8080/77726476706e69737468656265737421a2a611d2736526022a5ac7f9/opac/ajax_search_adv.php',
             method='POST',
             headers={

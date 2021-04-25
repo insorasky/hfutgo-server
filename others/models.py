@@ -13,3 +13,11 @@ class Notice(models.Model):
     page = models.TextField()
     theme = models.TextField()
     time = models.DateTimeField(auto_now=True)
+
+
+class Log(models.Model):
+    user = models.CharField(max_length=10)
+    path = models.TextField()
+    params = models.TextField()
+    data = models.JSONField(default=dict)
+    time = models.DateTimeField(auto_now=True)

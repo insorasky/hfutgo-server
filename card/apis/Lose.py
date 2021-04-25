@@ -1,11 +1,11 @@
-from utils.Request import Request, get_json_response
+from utils.response import get_json_response
 from bs4 import BeautifulSoup
+from django.views import View
 
 
-class Lose(Request):
-    def get(self, request):
-        super(Lose, self).get(request)
-        data = self.stu.request('http://172.31.248.20/accountDoLoss.action', method='POST', params={
+class Lose(View):
+    def get(self, request, stu):
+        data = stu.request('http://172.31.248.20/accountDoLoss.action', method='POST', params={
                                    'account': request.GET['account_id'],
                                    'passwd': request.GET['password']
                                }).text

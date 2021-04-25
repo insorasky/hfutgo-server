@@ -1,8 +1,9 @@
-from utils.Request import Request, get_json_response
+from utils.response import get_json_response
+from django.views import View
 from ..request import sc_request
 
 
-class Ranking(Request):
+class Ranking(View):
     def get(self, request):
         data = sc_request('POST', request.GET['id'], 'https://dekt.hfut.edu.cn/scReports/api/wx/range/student/score/',
                           json_data={'type': request.GET['type']})['data']
