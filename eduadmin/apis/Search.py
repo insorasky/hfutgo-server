@@ -6,7 +6,7 @@ from django.core.paginator import Paginator
 
 
 class Search(View):
-    def get(self, request, stu):
+    def get(self, request, stu, user):
         data = json.loads(request.body)
         filters = data['filters']
         building = ''

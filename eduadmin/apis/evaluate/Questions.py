@@ -3,7 +3,7 @@ from django.views import View
 
 
 class Questions(View):
-    def get(self, request, stu):
+    def get(self, request, stu, user):
         data = stu.request('http://jxglstu.hfut.edu.cn/eams5-student/for-std/lesson-survey/start-survey/%s/get-data' % request.GET['id'], headers={'Content-Type': 'application/json;charset=UTF-8'}).json()['survey']
         response = []
         for radio in data['radioQuestions']:

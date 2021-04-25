@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 
 
 class FreeRooms(View):
-    def get(self, request, stu):
+    def get(self, request, stu, user):
         data = stu.request('/http/77726476706e69737468656265737421a2a611d2736526022a5ac7fdca06/roomshow/').text
         soup = BeautifulSoup(data, 'lxml').select('table > tr')
         response = []

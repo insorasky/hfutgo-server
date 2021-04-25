@@ -4,7 +4,7 @@ import time
 
 
 class Bkzs(View):
-    def get(self, request, stu):
+    def get(self, request, stu, user):
         token = stu.request('http://bkzs.hfut.edu.cn/f/ajax_get_csrfToken',
                             method='POST',
                             params={'n': '1'},

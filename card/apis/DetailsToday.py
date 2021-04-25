@@ -4,11 +4,11 @@ from .get_details_from_html import get_details_from_html
 
 
 class DetailsToday(View):
-    def get(self, request, stu):
+    def get(self, request, stu, user):
         data = stu.request('http://172.31.248.20/accounttodatTrjnObject.action',
                            method='POST',
                            params={
-                               'account': request.GET['account_id'],
+                               'account': user.card_id,
                                'inputObject': 'all'
                            })
         detail = get_details_from_html(data)

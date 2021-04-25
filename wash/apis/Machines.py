@@ -4,7 +4,7 @@ from ..models import Machine
 
 
 class Machines(View):
-    def get(self, request, stu):
+    def get(self, request, stu, user):
         query = Machine.objects.filter(building=request.GET['building']).order_by('sort')
         data = []
         for machine in query:

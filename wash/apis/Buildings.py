@@ -4,7 +4,7 @@ from ..models import Building
 
 
 class Buildings(View):
-    def get(self, request, stu):
+    def get(self, request, stu, user):
         query = Building.objects.filter(campus=request.GET['campus']).order_by('sort')
         data = []
         for building in query:

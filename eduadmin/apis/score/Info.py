@@ -4,7 +4,7 @@ from django.views import View
 
 
 class Info(View):
-    def get(self, request, stu):
+    def get(self, request, stu, user):
         stu_id = stu.request('http://jxglstu.hfut.edu.cn/eams5-student/for-std/grade/sheet/', allow_redirects=False).headers['Location'].split('/')[-1]
         data = stu.request('http://jxglstu.hfut.edu.cn/eams5-student/for-std/grade/sheet/info/%s?semester=%s' % (stu_id, request.GET['sid'])).text
         soup = BeautifulSoup(data.replace('<br />', '\n'), 'lxml').select('tbody > tr')

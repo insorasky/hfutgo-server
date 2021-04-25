@@ -4,7 +4,7 @@ from django.views import View
 
 
 class BookInfo(View):
-    def get(self, request, stu):
+    def get(self, request, stu, user):
         data = stu.request('/http-8080/77726476706e69737468656265737421ffe7409f69386e456a468ca88d1b203b/opac/item.php?marc_no=' + request.GET['marc']).text
         soup = BeautifulSoup(data, 'lxml')
         information = []

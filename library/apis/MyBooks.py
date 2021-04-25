@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 
 
 class MyBooks(View):
-    def get(self, request, stu):
+    def get(self, request, stu, user):
         stu.request('/http-8080/77726476706e69737468656265737421a2a611d2736526022a5ac7f9/reader/hwthau2.php')
         data = stu.request('/http-8080/77726476706e69737468656265737421a2a611d2736526022a5ac7f9/reader/book_lst.php').text
         soup = BeautifulSoup(data, 'lxml').select('.table_line > tr')

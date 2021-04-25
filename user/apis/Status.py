@@ -3,7 +3,7 @@ from django.views import View
 
 
 class Status(View):
-    def get(self, request, stu):
+    def get(self, request, stu, user):
         status = stu.is_login
         if status:
             info = stu.userinfo

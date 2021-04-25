@@ -4,9 +4,9 @@ from django.views import View
 
 
 class Lose(View):
-    def get(self, request, stu):
+    def get(self, request, stu, user):
         data = stu.request('http://172.31.248.20/accountDoLoss.action', method='POST', params={
-                                   'account': request.GET['account_id'],
+                                   'account': user.card_id,
                                    'passwd': request.GET['password']
                                }).text
         data = BeautifulSoup(data, 'lxml').select('.biaotou')[0].text.strip()

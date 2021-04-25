@@ -5,14 +5,14 @@ from django.views import View
 
 
 class DetailsPast(View):
-    def get(self, request, stu):
+    def get(self, request, stu, user):
         today = datetime.date.today()
         one_month_ago = today - datetime.timedelta(days=31)
         if request.GET['page'] == '1':
             stu.request('http://172.31.248.20/accounthisTrjn1.action',
                              method='POST',
                              params={
-                                 'account': request.GET['account_id'],
+                                 'account': user.card_id,
                                  'inputObject': 'all',
                                  'submit': '+%C8%B7+%B6%A8+'
                              })

@@ -3,7 +3,7 @@ from django.views import View
 
 
 class Subjects(View):
-    def get(self, request, stu):
+    def get(self, request, stu, user):
         stu_id = stu.request('http://jxglstu.hfut.edu.cn/eams5-student/for-std/lesson-survey', allow_redirects=False).headers['Location'].split('/')[-1]
         data = stu.request('http://jxglstu.hfut.edu.cn/eams5-student/for-std/lesson-survey/%s/search/%s' % (request.GET['sid'], stu_id)).json()
         response = []

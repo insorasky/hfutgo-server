@@ -31,10 +31,12 @@ class UserManageMiddleware(MiddlewareMixin):
                 if (time_now - user.last_login).seconds > 1800:
                     if stu.is_login:
                         self.stu = stu
+                        self.user = user
                     else:
                         return get_json_response('登录凭据失效', 1001)
                 else:
                     self.stu = stu
+                    self.user = user
             else:
                 return get_json_response('token异常！', 1101)
 
@@ -43,3 +45,4 @@ class UserManageMiddleware(MiddlewareMixin):
             return None
         else:
             view_kwargs['stu'] = self.stu
+            view_kwargs['user'] = self.user

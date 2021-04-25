@@ -4,8 +4,8 @@ from ..request import sc_request
 
 
 class Ranking(View):
-    def get(self, request):
-        data = sc_request('POST', request.GET['id'], 'https://dekt.hfut.edu.cn/scReports/api/wx/range/student/score/',
+    def get(self, request, stu, user):
+        data = sc_request('POST', user.student_id, 'https://dekt.hfut.edu.cn/scReports/api/wx/range/student/score/',
                           json_data={'type': request.GET['type']})['data']
         response = []
         for dat in data:

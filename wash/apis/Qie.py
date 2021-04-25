@@ -4,7 +4,7 @@ import requests
 
 
 class Qie(View):
-    def get(self, request, stu):
+    def get(self, request, stu, user):
         mid = request.GET['mid']
         if mid.len >= 15:
             data = requests.post('https://userapi.qiekj.com/machine/detail',

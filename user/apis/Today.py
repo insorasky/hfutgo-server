@@ -3,7 +3,7 @@ from django.views import View
 
 
 class Today(View):
-    def get(self, request, stu):
+    def get(self, request, stu, user):
         info = stu.userinfo
         balance = stu.request('/https/77726476706e69737468656265737421fff944d22f367d44300d8db9d6562d/api/operation/thirdPartyApi/schoolcard/balance?sno=' + info.id).json()['data']
         borrow_books = stu.request('/https/77726476706e69737468656265737421fff944d22f367d44300d8db9d6562d/api/operation/library/getBorrowNum').json()['data']

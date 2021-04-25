@@ -4,7 +4,7 @@ from ..models import Notice as NoticeModel
 
 
 class Notice(View):
-    def get(self, request, stu):
+    def get(self, request, stu, user):
         data = NoticeModel.objects.filter(page=request.GET['page'], show=True).order_by('-time').all()
         if len(data):
             response = []

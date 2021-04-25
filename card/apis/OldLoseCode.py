@@ -4,7 +4,7 @@ import base64
 
 
 class OldLoseCode(View):
-    def get(self, request, stu):
+    def get(self, request, stu, user):
         data = stu.request(
             '/http-8080/77726476706e69737468656265737421e0f4408e237e60566b1cc7a99c406d3657/getCheckpic.action').content
         return get_json_response({

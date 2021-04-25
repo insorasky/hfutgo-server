@@ -4,13 +4,13 @@ from ..request import sc_request
 
 
 class ProjectList(View):
-    def get(self, request, stu):
+    def get(self, request, stu, user):
         urls = {
             'applying': 'https://dekt.hfut.edu.cn/scReports/api/wx/item/getApplyingItemList/',
             'waiting': 'https://dekt.hfut.edu.cn/scReports/api/wx/item/getWaitItemList/',
             'end': 'https://dekt.hfut.edu.cn/scReports/api/wx/item/getEndItemList/'
         }
-        data = sc_request('POST', request.GET['id'], urls[request.GET['type']] + '1/100000',
+        data = sc_request('POST', user.student_id, urls[request.GET['type']] + '1/100000',
                           json_data={
                               'deptIds': [],
                               'modules': [],

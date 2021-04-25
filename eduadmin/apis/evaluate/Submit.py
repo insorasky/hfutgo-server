@@ -4,7 +4,7 @@ import json
 
 
 class Submit(View):
-    def get(self, request, stu):
+    def get(self, request, stu, user):
         body = json.loads(request.body)
         stu.request('http://jxglstu.hfut.edu.cn/eams5-student/for-std/lesson-survey/start-survey/' + str(
             body['lessonSurveyTaskAssoc']))
