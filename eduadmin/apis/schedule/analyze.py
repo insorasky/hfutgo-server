@@ -73,4 +73,7 @@ def analyze(string):
 
 
 if __name__ == '__main__':
-    print(analyze('40~44周(单) 周五 第四节~第十一节 翡翠湖校区 翠五教303(201)'))
+    schedule_texts = '1~10,12~17周 周一 第三节~第四节 翡翠湖校区 翠五教104(201); \n1~10,12~17周 周三 第一节~第二节 翡翠湖校区 翠五教104(201); \n1~10,12~17周 周五 第三节~第四节 翡翠湖校区 翠五教104(201)'.split('; \n')
+    schedules = []
+    for text in schedule_texts:
+        print(analyze(text))
