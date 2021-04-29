@@ -12,15 +12,12 @@ url = [
 
 
 class LogMiddleware(MiddlewareMixin):
-    def process_request(self, request):
+    def process_view(self, request, view_func, view_args, view_kwargs):
         if request.path in url:
             return None
         else:
-            user = User.objects.filter(
-                user_token=request.GET['token']
-            ).first()
             Log.objects.create(
-                user=user.student_id,
+                user=view_kwargs['user'].student_id,
                 path=request.path,
                 params=json.dumps(request.GET),
             )
