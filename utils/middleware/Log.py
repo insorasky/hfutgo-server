@@ -1,13 +1,12 @@
 from django.utils.deprecation import MiddlewareMixin
 import json
 from django.shortcuts import reverse
-from user.models import User
 from others.models import Log
 
 url = [
-    reverse('user_login'),
-    reverse('others_notice'),
-    reverse('index'),
+    '/user/login',
+    '/others/notice',
+    '/',
 ]
 
 

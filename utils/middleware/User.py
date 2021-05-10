@@ -6,9 +6,9 @@ from datetime import datetime
 from utils.Student import Student
 
 url = [
-    reverse('user_login'),
-    reverse('others_notice'),
-    reverse('index'),
+    '/user/login',
+    '/others/notice',
+    '/',
 ]
 
 
@@ -19,7 +19,7 @@ class UserManageMiddleware(MiddlewareMixin):
         else:
             if 'token' in request.GET:
                 user = User.objects.filter(
-                    user_token=request.GET['token']
+                    user_token=request.META['token']
                 ).first()
                 if not user:
                     return get_json_response('登录凭据无效', 1000)

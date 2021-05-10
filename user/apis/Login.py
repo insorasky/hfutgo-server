@@ -10,7 +10,7 @@ import uuid
 class Login(View):
     def get(self, request):
         student = Student()
-        status = student.login(request.GET['username'], request.GET['password'])
+        status = student.login(request.GET['id'], request.GET['password'])
         if status is True:
             token = uuid.uuid4()
             info = student.userinfo
@@ -32,17 +32,17 @@ class Login(View):
                 data={}
             )
             return get_json_response({
-                'vpn_token': student.vpn_token,
+                'ticket': student.vpn_token,
                 'at_token': student.at_token,
                 'token': token,
-                'class': info.organization,
+                'class_name': info.organization,
                 'name': info.name
             })
         elif status == -2:
             return get_json_response({
                 'code': status,
                 'boss_ticket': student.boss_ticket,
-                'vpn_token': student.vpn_token
+                'ticket': student.vpn_token
             }, 3301)
         else:
             return get_json_response(status, 3302)
