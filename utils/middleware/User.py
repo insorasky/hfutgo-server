@@ -1,9 +1,9 @@
 from django.utils.deprecation import MiddlewareMixin
-from django.shortcuts import reverse
 from utils.response import get_json_response
 from user.models import User
 from datetime import datetime
 from utils.Student import Student
+from django.http import HttpRequest
 
 url = [
     '/user/login',
@@ -14,12 +14,13 @@ url = [
 
 class UserManageMiddleware(MiddlewareMixin):
     def process_request(self, request):
+        print(request.path)
         if request.path in url:
             return None
         else:
-            if 'token' in request.GET:
+            if 'token' in request.headers:
                 user = User.objects.filter(
-                    user_token=request.META['token']
+                    user_token=request.headers['token']
                 ).first()
                 if not user:
                     return get_json_response('登录凭据无效', 1000)
