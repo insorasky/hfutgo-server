@@ -35,7 +35,9 @@ def analyze(string):
         class_nums.append(CLASS_CHINESE[class_num.replace(';', '')])
     # 教室
     pattern = re.compile(r"^.*?[0-9]{1,3}")
-    rooms = [strings[3]] if len(strings) == 4 else re.findall(pattern, strings[4])
+    rooms = []
+    if len(strings) > 3:
+        rooms = [strings[3]] if len(strings) == 4 else re.findall(pattern, strings[4])
     # 时间
     pattern = re.compile(r"([0-9]+~?[0-9]*(\(.\))?)")
     week_infos = re.findall(pattern, time_str)
