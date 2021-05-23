@@ -8,5 +8,7 @@ class Buildings(View):
         query = Building.objects.filter(campus=request.GET['campus']).order_by('sort')
         data = []
         for building in query:
-            data.append(building.name)
+            data.append({
+                'name': building.name
+            })
         return get_json_response(data)
