@@ -29,7 +29,7 @@ class Schedules(View):
                 'schedules': schedules,
                 'classes': lesson['nameZh'],
                 # 'credits': lesson['course']['credit'],
-                'type': lesson['courseType'],
+                'type': lesson['courseType']['name'],
                 'teachers': teachers
             })
         return get_json_response({
