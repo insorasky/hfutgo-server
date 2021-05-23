@@ -8,7 +8,7 @@ class Score(View):
         data = sc_request('GET', user.student_id, 'https://dekt.hfut.edu.cn/scReports/api/wx/report/getUserScore')
         if data['code'] == '200':
             userinfo = \
-                sc_request('GET', request.GET['id'], 'https://dekt.hfut.edu.cn/scReports/api/wx/uc/userInfo')[
+                sc_request('GET', user.student_id, 'https://dekt.hfut.edu.cn/scReports/api/wx/uc/userInfo')[
                     'data']
             return get_json_response({
                 'class': userinfo['deptAndClassesName'],

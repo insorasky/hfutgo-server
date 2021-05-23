@@ -10,7 +10,7 @@ class ProjectList(View):
             'waiting': 'https://dekt.hfut.edu.cn/scReports/api/wx/item/getWaitItemList/',
             'end': 'https://dekt.hfut.edu.cn/scReports/api/wx/item/getEndItemList/'
         }
-        data = sc_request('POST', user.student_id, urls[request.GET['type']] + '1/100000',
+        data = sc_request('POST', user.student_id, urls[request.GET['type']] + request.GET['page'] + '/25',
                           json_data={
                               'deptIds': [],
                               'modules': [],
