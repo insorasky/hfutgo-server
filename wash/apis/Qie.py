@@ -29,7 +29,7 @@ class Qie(View):
             if data['status'] == 1:
                 status = '空闲'
             elif data['status'] == 2:
-                status = '使用中，剩余' + data['remainTime'] + '秒'
+                status = '使用中，剩余%s秒' % data['remainTime']
             else:
                 status = '未知(%s)' % data['status']
         else:

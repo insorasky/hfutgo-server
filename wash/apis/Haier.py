@@ -11,7 +11,10 @@ class Haier(View):
                             params={
                                 'deviceQRCode': mid,
                                 'ssid': ssid
-                            }).json()['data']
+                            }).json()
+        if 'data' not in data:
+            return get_json_response({'status': data['retInfo']})
+        data = data['data']
         if data['status'] == '1':
             status = '空闲'
         elif data['status'] == '2' or data['status'] == '3':
