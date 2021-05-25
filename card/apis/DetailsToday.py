@@ -11,7 +11,7 @@ class DetailsToday(View):
                                'account': user.card_id,
                                'inputObject': 'all'
                            })
-        detail = get_details_from_html(data)
+        detail = get_details_from_html(data.text)
         return get_json_response({
             'page_count': detail.pages,
             'details': detail.details

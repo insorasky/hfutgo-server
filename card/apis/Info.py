@@ -21,6 +21,6 @@ class Info(View):
             'sum': str(round(float(balance_data[1]) + float(balance_data[2]), 2)),
             'available': balance_data[1],
             'waiting': balance_data[2],
-            'freeze': soup.select('tr:nth-child(11) > td:nth-child(6) > div:nth-child(1)')[0].text,
-            'lost': soup.select('tr:nth-child(12) > td:nth-child(6)')[0].text
+            'freeze': soup.select('tr:nth-child(11) > td:nth-child(6) > div:nth-child(1)')[0].text.strip(),
+            'lost': soup.select('tr:nth-child(12) > td:nth-child(6)')[0].text.strip()
         })
