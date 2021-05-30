@@ -5,5 +5,5 @@ from ..models import Config
 
 class TimeTable(View):
     def get(self, request, stu, user):
-        data = Config.objects.filter(name='timetable_%s' % request.GET['campus']).first()
-        return get_json_response(data.value)
+        data = Config.objects.filter(name='timetable_%s' % request.GET['campus']).first().value
+        return get_json_response(data)

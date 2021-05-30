@@ -5,3 +5,4 @@ from .Ranking import Ranking
 from .Register import Register
 from .Score import Score
 from .UnRegister import UnRegister
+from .Check import Check

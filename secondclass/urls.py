@@ -7,5 +7,6 @@ urlpatterns = [
     path('info', ProjectInfo.as_view(), name='sc_info'),
     path('my_projects', MyProjects.as_view(), name='sc_my'),
     path('register', Register.as_view(), name='sc_reg'),
-    path('unregister', UnRegister.as_view(), name='sc_unreg')
+    path('unregister', UnRegister.as_view(), name='sc_unreg'),
+    path('check', Check.as_view(), name='sc_check')
 ]

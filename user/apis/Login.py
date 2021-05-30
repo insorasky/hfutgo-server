@@ -44,7 +44,7 @@ class Login(View):
                 'boss_ticket': student.boss_ticket,
                 'ticket': student.vpn_token
             }, 3301)
-        elif status == -3:
+        elif status == -1:
             return get_json_response("密码错误！", 3303)
         else:
             return get_json_response(status, 3302)

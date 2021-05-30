@@ -7,23 +7,21 @@ class Score(View):
     def get(self, request, stu, user):
         data = sc_request('GET', user.student_id, 'https://dekt.hfut.edu.cn/scReports/api/wx/report/getUserScore')
         if data['code'] == '200':
-            userinfo = \
-                sc_request('GET', user.student_id, 'https://dekt.hfut.edu.cn/scReports/api/wx/uc/userInfo')[
-                    'data']
+            userinfo = sc_request('GET', user.student_id, 'https://dekt.hfut.edu.cn/scReports/api/wx/uc/userInfo')['data']
             return get_json_response({
                 'class': userinfo['deptAndClassesName'],
-                'data': {
-                    '思政学习': data['data']['szxx'],
-                    '科技创新': data['data']['kjcx'],
-                    '体育健身': data['data']['tyjs'],
-                    '公益服务': data['data']['gyfw'],
-                    '社会实践': data['data']['shsj'],
-                    '创业活动': data['data']['cyhd'],
-                    '文艺活动': data['data']['wyhd'],
-                    '社团活动': data['data']['sthd'],
-                    '技能项目': data['data']['jnxm'],
-                    '志愿服务时长': userinfo['serviceHour']
-                }
+                'data': [
+                    {'title': '思政学习', 'score': data['data']['szxx']},
+                    {'title': '科技创新', 'score': data['data']['kjcx']},
+                    {'title': '体育健身', 'score': data['data']['tyjs']},
+                    {'title': '公益服务', 'score': data['data']['gyfw']},
+                    {'title': '社会实践', 'score': data['data']['shsj']},
+                    {'title': '创业活动', 'score': data['data']['cyhd']},
+                    {'title': '文艺活动', 'score': data['data']['wyhd']},
+                    {'title': '社团活动', 'score': data['data']['sthd']},
+                    {'title': '技能项目', 'score': data['data']['jnxm']},
+                ],
+                'hour': userinfo['serviceHour']
             })
         else:
             return get_json_response("未知错误", 3203)

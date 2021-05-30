@@ -14,14 +14,16 @@ class Ranking(View):
                 'name': dat['userName'],
                 'rank': dat['rank'],
                 'sum': dat['sumScore'],
-                '思政学习': dat['szxxNum'],
-                '科技创新': dat['kjcxNum'],
-                '体育健身': dat['tyjsNum'],
-                '公益服务': dat['gyfwNum'],
-                '社会实践': dat['shsjNum'],
-                '创业活动': dat['cyhdNum'],
-                '文艺活动': dat['wyhdNum'],
-                '社团活动': dat['sthdNum'],
-                '技能项目': dat['jnxmNum']
+                'data': [
+                    {'title': '思政学习', 'score': dat['szxxNum']},
+                    {'title': '科技创新', 'score': dat['kjcxNum']},
+                    {'title': '体育健身', 'score': dat['tyjsNum']},
+                    {'title': '公益服务', 'score': dat['gyfwNum']},
+                    {'title': '社会实践', 'score': dat['shsjNum']},
+                    {'title': '创业活动', 'score': dat['cyhdNum']},
+                    {'title': '文艺活动', 'score': dat['wyhdNum']},
+                    {'title': '社团活动', 'score': dat['sthdNum']},
+                    {'title': '技能项目', 'score': dat['jnxmNum']}
+                ]
             })
         return get_json_response(response)
