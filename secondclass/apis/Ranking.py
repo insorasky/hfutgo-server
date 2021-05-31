@@ -14,6 +14,8 @@ class Ranking(View):
                 'name': dat['userName'],
                 'rank': dat['rank'],
                 'sum': dat['sumScore'],
+                'clazz': '',
+                'hour': '',
                 'data': [
                     {'title': '思政学习', 'score': dat['szxxNum']},
                     {'title': '科技创新', 'score': dat['kjcxNum']},
