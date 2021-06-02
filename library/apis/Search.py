@@ -4,8 +4,9 @@ import json
 
 
 class Search(View):
-    def post(self, request, stu):
-        filters = json.loads(request.body)['filters']
+    def post(self, request, stu, user):
+        json_body = json.loads(request.body)
+        filters = json_body['filters']
         data = stu.request(
             '/http-8080/77726476706e69737468656265737421a2a611d2736526022a5ac7f9/opac/ajax_search_adv.php',
             method='POST',
@@ -18,7 +19,7 @@ class Search(View):
                         "fieldList": [
                             {
                                 "fieldCode": "any",
-                                "fieldValue": request.GET['word']
+                                "fieldValue": json_body['word']
                             }
                         ]
                     }
@@ -28,7 +29,7 @@ class Search(View):
                 "sortField": "relevance",
                 "sortType": "desc",
                 "pageSize": 20,
-                "pageCount": int(request.GET['page']),
+                "pageCount": int(json_body['page']),
                 "locale": "zh_CN",
                 "first": True
             }).json()
