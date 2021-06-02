@@ -21,7 +21,7 @@ class UserManageMiddleware(MiddlewareMixin):
                 login_state = LoginState.objects.filter(
                     token=request.headers['token']
                 ).first()
-                if not login_state:
+                if (not login_state) or (login_state.available is False):
                     return get_json_response('登录凭据无效', 1000)
                 user = User.objects.get(pk=login_state.user_id)
                 time_now = datetime.now()
@@ -34,10 +34,12 @@ class UserManageMiddleware(MiddlewareMixin):
                         self.stu = stu
                         self.user = user
                     else:
+                        login_state.available = False
                         return get_json_response('登录凭据失效', 1001)
                 else:
                     self.stu = stu
                     self.user = user
+                    self.login_state = login_state
             else:
                 return get_json_response('token异常！', 1101)
 
@@ -47,3 +49,5 @@ class UserManageMiddleware(MiddlewareMixin):
         else:
             view_kwargs['stu'] = self.stu
             view_kwargs['user'] = self.user
+            if request.path == '/user/logout':
+                view_kwargs['login_state'] = self.login_state
