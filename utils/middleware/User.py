@@ -1,9 +1,8 @@
 from django.utils.deprecation import MiddlewareMixin
 from utils.response import get_json_response
-from user.models import User
+from user.models import User, LoginState
 from datetime import datetime
 from utils.Student import Student
-from django.http import HttpRequest
 
 url = [
     '/user/login',
@@ -19,15 +18,16 @@ class UserManageMiddleware(MiddlewareMixin):
             return None
         else:
             if 'token' in request.headers:
-                user = User.objects.filter(
-                    user_token=request.headers['token']
+                login_state = LoginState.objects.filter(
+                    token=request.headers['token']
                 ).first()
-                if not user:
+                if not login_state:
                     return get_json_response('登录凭据无效', 1000)
+                user = User.objects.get(pk=login_state.user_id)
                 time_now = datetime.now()
                 stu = Student(
-                    ticket=user.vpn_ticket,
-                    at_token=user.at_token
+                    ticket=login_state.vpn_ticket,
+                    at_token=login_state.at_token
                 )
                 if (time_now - user.last_login).seconds > 1800:
                     if stu.is_login:

@@ -1,7 +1,7 @@
 from utils.response import get_json_response
 from utils.Student import Student
 from django.views import View
-from ..models import User
+from ..models import User, LoginState
 from others.models import Log
 import json
 import uuid
@@ -18,12 +18,17 @@ class Login(View):
                 defaults={
                     'name': info.name,
                     'organization': info.organization,
-                    'vpn_ticket': student.vpn_token,
-                    'at_token': student.at_token,
-                    'user_token': token,
                     'type': info.type,
                 },
                 student_id=info.id
+            )
+            LoginState.objects.create(
+                user_id=user.pk,
+                student_id=user.student_id,
+                token=token,
+                vpn_ticket=student.vpn_token,
+                at_token=student.at_token,
+                available=True
             )
             Log.objects.create(
                 user=info.id,
