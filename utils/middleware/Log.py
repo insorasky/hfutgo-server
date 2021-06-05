@@ -2,12 +2,7 @@ from django.utils.deprecation import MiddlewareMixin
 import json
 from django.shortcuts import reverse
 from others.models import Log
-
-url = [
-    '/user/login',
-    '/others/notice',
-    '/',
-]
+from .User import url
 
 
 class LogMiddleware(MiddlewareMixin):

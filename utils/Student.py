@@ -103,7 +103,7 @@ class Student:
         self.__at = data['data']['access_token']
         return True
 
-    def request(self, url, method='GET', params=None, data=None, headers=None, allow_redirects=True):
+    def request(self, url, method='GET', params=None, data=None, headers=None, allow_redirects=True, timeout=None):
         if headers is None:
             headers = {}
         url = url if url[0] == '/' else encrypUrl(url.split('://')[0], url)
@@ -112,7 +112,7 @@ class Student:
         if data is not None:
             data = json.dumps(data)
         return self.session.request(method=method, url=URL_VPN_BASE + url, params=params, data=data,
-                                    headers=headers, allow_redirects=allow_redirects)
+                                    headers=headers, allow_redirects=allow_redirects, timeout=timeout)
 
     @property
     def userinfo(self):

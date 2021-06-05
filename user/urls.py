@@ -5,5 +5,7 @@ urlpatterns = [
     path('is_login', Status.as_view(), name='user_is_login'),
     path('today', Today.as_view(), name='user_today'),
     path('new_user/', include('user.apis.new_user.urls'), name='new_user'),
+    path('today_page/', include('user.apis.today.urls'), name='today_page'),
+    path('forgot/', include('user.apis.forgot.urls'), name='user_forgot'),
     path('logout', Logout.as_view(), name='user_logout')
 ]

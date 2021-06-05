@@ -7,6 +7,15 @@ from utils.Student import Student
 url = [
     '/user/login',
     '/others/notice',
+    '/user/new_user/get_phone_code',
+    '/user/new_user/get_email_code',
+    '/user/new_user/verify_email',
+    '/user/new_user/verify_phone',
+    '/user/forgot/get_code',
+    '/user/forgot/get_message',
+    '/user/forgot/get_session',
+    '/user/forgot/verify',
+    '/user/forgot/reset',
     '/',
 ]
 

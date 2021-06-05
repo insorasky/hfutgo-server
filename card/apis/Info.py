@@ -7,7 +7,7 @@ import re
 class Info(View):
     def get(self, request, stu, user):
         try:
-            stu.request('http://172.31.248.20/ahdxdrPortalHome.action')
+            stu.request('http://172.31.248.20/ahdxdrPortalHome.action', timeout=7)
             data = stu.request(
                 '/http/77726476706e69737468656265737421a1a013d2746126022a50c7fec8/accountcardUser.action').text
             soup = BeautifulSoup(data, 'lxml').select('.tttt > tr:nth-child(1) > th:nth-child(1) > table:nth-child(1)')[0]
@@ -25,5 +25,5 @@ class Info(View):
                 'freeze': soup.select('tr:nth-child(11) > td:nth-child(6) > div:nth-child(1)')[0].text.strip(),
                 'lost': soup.select('tr:nth-child(12) > td:nth-child(6)')[0].text.strip()
             })
-        except:
+        except BaseException:
             return get_json_response('学校维护中', 3001)

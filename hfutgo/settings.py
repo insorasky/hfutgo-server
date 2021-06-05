@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'others',
     'eduadmin',
     'user',
+    'developer',
 ]
 
 MIDDLEWARE = [
