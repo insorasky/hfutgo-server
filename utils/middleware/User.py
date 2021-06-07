@@ -16,6 +16,7 @@ url = [
     '/user/forgot/get_session',
     '/user/forgot/verify',
     '/user/forgot/reset',
+    '/user/logout',
     '/',
 ]
 
