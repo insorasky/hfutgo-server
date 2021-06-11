@@ -47,6 +47,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'utils.middleware.User.UserManageMiddleware',
     'utils.middleware.Log.LogMiddleware',
+    'utils.middleware.Exception.ExceptionMiddleWare',
 ]
 
 ROOT_URLCONF = 'hfutgo.urls'
