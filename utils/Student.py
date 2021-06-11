@@ -109,7 +109,7 @@ class Student:
         url = url if url[0] == '/' else encrypUrl(url.split('://')[0], url)
         if '77726476706e69737468656265737421fff944d22f367d44300d8db9d6562d' in url:
             headers.update({'Authorization': 'Bearer ' + self.__at})
-        if data is not None:
+        if data is not None and 'Content-Type' not in headers:
             data = json.dumps(data)
         return self.session.request(method=method, url=URL_VPN_BASE + url, params=params, data=data,
                                     headers=headers, allow_redirects=allow_redirects, timeout=timeout)

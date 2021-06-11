@@ -6,8 +6,10 @@ urlpatterns = [
     path('score/', include('eduadmin.apis.score.urls'), name='eduadmin_score'),
     path('evaluate/', include('eduadmin.apis.evaluate.urls'), name='eduadmin_evaluate'),
     # path('all_schedule/', include('eduadmin.apis.all_schedule.urls'), name='eduadmin_all_schedule'),
-    path('classroom/', include('eduadmin.apis.classroom.urls'), name='eduadmin_classroom'),
+    path('roomboard/', include('eduadmin.apis.roomboard.urls'), name='eduadmin_roomboard'),
     path('schedule/', include('eduadmin.apis.schedule.urls'), name='eduadmin_schedule'),
     path('login', Login.as_view(), name='eduadmin_login'),
     path('exams', Exams.as_view(), name='eduadmin_exams'),
+    path('manager/', include('eduadmin.apis.manager.urls'), name='eduadmin_manager'),
+    path('reset_pwd', ResetPassword.as_view(), name='eduadmin_password'),
 ]
