@@ -11,5 +11,5 @@ urlpatterns = [
     path('login', Login.as_view(), name='eduadmin_login'),
     path('exams', Exams.as_view(), name='eduadmin_exams'),
     path('manager/', include('eduadmin.apis.manager.urls'), name='eduadmin_manager'),
-    path('reset_pwd', ResetPassword.as_view(), name='eduadmin_password'),
+    path('password/', include('eduadmin.apis.password.urls'), name='eduadmin_password'),
 ]
