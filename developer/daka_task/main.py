@@ -11,7 +11,6 @@ from enum import Enum
 from developer.daka_task.Student import Student
 from utils.ECBPkcs7 import ECBPkcs7
 from config import UserInfo
-from hfutgo.settings import WEIXIN_APPID, WEIXIN_SECRET
 from developer.models import DakaLog
 
 class Url(Enum):
@@ -50,23 +49,10 @@ class Daka:
         return ECBPkcs7(key).encrypt(password)
 
     def __login(self, id, password):
-        data = self.__student.request(
-            url=Url.login.value,
-            method='POST',
-            headers=self.__headers,
-            data={
-                'userName': id,
-                'password': self.__encryptPwd(password),
-                'isWeekLogin': 'false'
-            }
-        ).json()
-        if 'validate' in data:
-            return data['validate'] == 'success'
-        else:
-            return False
+        return self.__student.login(id, password)
 
     def __initialize(self):
-        self.__student.request(Url.initialize.value)
+        data = self.__student.request(Url.initialize.value)
 
     def __getZxpaxx(self):
         data = self.__student.request(
@@ -107,8 +93,8 @@ class Daka:
             method='POST',
             headers=self.__headers,
             data={'data': '{}'}
-        ).json()
-
+        )
+        data = data.json()
         class Time:
             def __init__(self, start, end):
                 start = re.findall(r'([0-9]{2})', start)
@@ -152,26 +138,15 @@ class Daka:
         else:
             return data['msg']
 
-    def run(self, id, password, password2):
-        if UserInfo.vpn.value:
-            if self.__student.login(id, password2) is not True:
-                print('新信息门户密码错误！')
-                return
+    def run(self, id, password):
         try:
             logined = self.__login(id, password)
         except requests.exceptions.RequestException:  # 你HFUT又双叒封网辣
-            if UserInfo.auto_vpn.value and (not UserInfo.vpn.value):
-                print("封网，正在尝试使用VPN")
-                if self.__student.login(id, password2) is not True:
-                    print('新信息门户密码错误！')
-                    return
-                print('WebVPN登录成功！')
-                logined = self.__login(id, password)
-            else:
-                return "连接失败，可能又封网了！"
+            return "连接失败，可能又封网了！"
         except:
             return "未知错误，可能又封网了！"
-        if logined:
+        if logined is True:
+            print("登录成功")
             self.__initialize()
             times = self.__getTime()
             now = datetime.now()
@@ -191,35 +166,10 @@ class Daka:
 
 
 if __name__ == '__main__':
-    wx = requests.get('https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s' % (WEIXIN_APPID, WEIXIN_SECRET)).json()
     for user in UserInfo.users.value:
         if user['enable']:
             daka = Daka()
             print("当前打卡：" + user['user'])
-            status = daka.run(user['user'], user['password'], '')
-            '''
-            print(user)
-            print(wx)
-            wx = requests.post(
-                url='https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token=%s' % wx['access_token'],
-                json={
-                    "touser": user['openid'],
-                    "template_id": "5IPVDE4c6CH09H1fMX_MQVHAA3rrf7amPuyEAH_YBQ4",
-                    "data": {
-                        "thing9": {
-                            "value": "若使用此功能，所有风险由您自己承担。"
-                        },
-                        "thing7": {
-                            "value": status
-                        },
-                        "time16": {
-                            "value": datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-                        }
-                    }
-                }
-            ).json()
-            if wx['errmsg'] != 'ok':
-                print(wx['errmsg'])
-            '''
+            status = daka.run(user['user'], user['password'])
             print(status)
             DakaLog(user=user['user'], status=1, log=status).save()
