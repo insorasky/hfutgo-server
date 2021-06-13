@@ -1,5 +1,5 @@
 from enum import Enum
-from ..models import DakaUser
+from developer.models import DakaUser
 
 
 class UserInfo(Enum):

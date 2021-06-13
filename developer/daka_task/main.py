@@ -1,12 +1,18 @@
-import requests, re, base64, json
+import os, sys
+parent_path = os.path.dirname(os.path.abspath('../..'))
+sys.path.append(parent_path)
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "hfutgo.settings")
+import django
+django.setup()
+
+import requests, re, json
 from datetime import time, datetime
 from enum import Enum
-from .utils.Student import Student
+from developer.daka_task.Student import Student
 from utils.ECBPkcs7 import ECBPkcs7
 from config import UserInfo
 from hfutgo.settings import WEIXIN_APPID, WEIXIN_SECRET
-from ..models import DakaLog
-
+from developer.models import DakaLog
 
 class Url(Enum):
     key = 'http://stu.hfut.edu.cn/xsfw/sys/emapfunauth/pages/funauth-login.do'
@@ -146,7 +152,7 @@ class Daka:
         else:
             return data['msg']
 
-    def run(self, id, password, password2, access_token, openid):
+    def run(self, id, password, password2):
         if UserInfo.vpn.value:
             if self.__student.login(id, password2) is not True:
                 print('新信息门户密码错误！')
@@ -162,11 +168,9 @@ class Daka:
                 print('WebVPN登录成功！')
                 logined = self.__login(id, password)
             else:
-                print("连接失败，可能又封网了！")
-                return
+                return "连接失败，可能又封网了！"
         except:
-            print("未知错误，可能又封网了！")
-            return
+            return "未知错误，可能又封网了！"
         if logined:
             self.__initialize()
             times = self.__getTime()
@@ -177,34 +181,13 @@ class Daka:
             if (now < times.end) and (now > times.start):
                 saved = self.__save()
                 if saved == True:
-                    status = '打卡成功'
+                    return '打卡成功'
                 else:
-                    status = '打卡失败！' + saved
+                    return '打卡失败！' + saved
             else:
-                status = '在签到开放时间外！'
+                return '在签到开放时间外！'
         else:
-            status = '帐号或密码错误！'
-        wx = requests.post(
-            url='https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token=%s' % access_token,
-            json={
-                "touser": openid,
-                "template_id": "5IPVDE4c6CH09H1fMX_MQVHAA3rrf7amPuyEAH_YBQ4",
-                "data": {
-                    "thing9": {
-                        "value": "若使用此功能，所有风险由您自己承担。"
-                    },
-                    "thing7": {
-                        "value": status
-                    },
-                    "time16": {
-                        "value": datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-                    }
-                }
-            }
-        ).json()
-        if wx['errmsg'] != 'ok':
-            print(wx['errmsg'])
-        DakaLog(user=id, status=1, log=status).save()
+            return '帐号或密码错误！'
 
 
 if __name__ == '__main__':
@@ -213,4 +196,30 @@ if __name__ == '__main__':
         if user['enable']:
             daka = Daka()
             print("当前打卡：" + user['user'])
-            daka.run(user['user'], user['password'], '', wx['access_token'], user['openid'])
+            status = daka.run(user['user'], user['password'], '')
+            '''
+            print(user)
+            print(wx)
+            wx = requests.post(
+                url='https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token=%s' % wx['access_token'],
+                json={
+                    "touser": user['openid'],
+                    "template_id": "5IPVDE4c6CH09H1fMX_MQVHAA3rrf7amPuyEAH_YBQ4",
+                    "data": {
+                        "thing9": {
+                            "value": "若使用此功能，所有风险由您自己承担。"
+                        },
+                        "thing7": {
+                            "value": status
+                        },
+                        "time16": {
+                            "value": datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                        }
+                    }
+                }
+            ).json()
+            if wx['errmsg'] != 'ok':
+                print(wx['errmsg'])
+            '''
+            print(status)
+            DakaLog(user=user['user'], status=1, log=status).save()
