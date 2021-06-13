@@ -10,10 +10,7 @@ class Search(View):
         data = stu.request(
             '/http-8080/77726476706e69737468656265737421a2a611d2736526022a5ac7f9/opac/ajax_search_adv.php',
             method='POST',
-            headers={
-                'Content-Type': 'application/json'
-            },
-            data={
+            json={
                 "searchWords": [
                     {
                         "fieldList": [

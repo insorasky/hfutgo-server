@@ -11,10 +11,11 @@ class GetCode(View):
                 % (request.GET['id'], request.GET['type'], request.GET['captcha']),
             cookies={TICKET_NAME: request.GET['vpn_ticket']}
         ).json()
+        print(data)
         if data['code'] == 1:
             return get_json_response({
                 'success': True,
                 'random': data['data']['codeRandom']
             })
         else:
-            return get_json_response(data['msg'], 3001)
+            return get_json_response('用户不存在' if data['msg'] == '发送验证码失败，请重试！' else data['msg'], 3001)
