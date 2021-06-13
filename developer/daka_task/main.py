@@ -1,5 +1,5 @@
 import os, sys
-parent_path = os.path.dirname(os.path.abspath('../..'))
+parent_path = os.path.abspath('.')
 sys.path.append(parent_path)
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "hfutgo.settings")
 import django
