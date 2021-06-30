@@ -4,7 +4,7 @@ import requests
 
 
 class Qie(View):
-    def get(self, request, stu, user):
+    def get(self, request):
         mid = requests.post(
             url='https://userapi.qiekj.com/goods/scan/v2',
             params={

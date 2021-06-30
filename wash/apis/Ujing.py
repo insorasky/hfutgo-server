@@ -5,7 +5,7 @@ from others.models import Config
 
 
 class Ujing(View):
-    def get(self, request, stu, user):
+    def get(self, request):
         mid = request.GET['mid']
         token = Config.objects.filter(name='ujing_token').first().value['token']
         data = requests.post('https://phoenix.ujing.online:443/api/v1/devices/scanWasherCode',

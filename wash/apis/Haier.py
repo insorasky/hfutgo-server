@@ -4,7 +4,7 @@ import requests
 
 
 class Haier(View):
-    def get(self, request, stu, user):
+    def get(self, request):
         mid = request.GET['mid']
         ssid = request.GET['ssid']
         data = requests.get('https://www.saywash.com/saywash/WashCallApi/common/laundry/getDeviceInfo.api',

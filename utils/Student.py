@@ -133,7 +133,7 @@ class Student:
                         self.id = data_json['guid']
                         self.gender = data_json['xbName']
                         self.avatar = data_json['avatorUrl']
-                        self.name_en = data_json['firstLetter']
+                        # self.name_en = data_json['firstLetter']
                 return Info(data)
             else:
                 return None

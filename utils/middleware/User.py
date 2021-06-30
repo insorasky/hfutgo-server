@@ -12,19 +12,24 @@ url = [
     '/user/new_user/get_email_code',
     '/user/new_user/verify_email',
     '/user/new_user/verify_phone',
+    '/user/new_user/set_password'
     '/user/forgot/get_code',
     '/user/forgot/get_message',
     '/user/forgot/get_session',
     '/user/forgot/verify',
     '/user/forgot/reset',
     '/user/logout',
+    '/wash/buildings',
+    '/wash/machines',
+    '/wash/qie',
+    '/wash/haier',
+    '/wash/ujing',
     '/',
 ]
 
 
 class UserManageMiddleware(MiddlewareMixin):
     def process_request(self, request):
-        print(request.path)
         if request.path in url:
             return None
         else:
