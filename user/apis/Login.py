@@ -25,6 +25,7 @@ class Login(View):
             LoginState.objects.create(
                 user_id=user.pk,
                 student_id=user.student_id,
+                type=1,
                 token=token,
                 vpn_ticket=student.vpn_token,
                 at_token=student.at_token,

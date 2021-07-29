@@ -8,6 +8,5 @@ def sc_request(method, userid, url, params=None, json_data=None):
         params = []
     if json_data is not None:
         headers.update({'Content-Type': 'application/json'})
-        json_data = json.dumps(json_data)
-    data = requests.request(method, url, params=params, headers=headers, data=json_data).json()
+    data = requests.request(method, url, params=params, headers=headers, json=json_data).json()
     return data

@@ -10,6 +10,14 @@ class Info(View):
         response = []
         for tr in soup:
             td = tr.select('td')
+            if '待评教' in td[6].text:
+                response.append({
+                    'name': td[0].text,
+                    'pending': True,
+                    'subject_id': td[1].text,
+                    'class_id': td[2].text,
+                })
+                continue
             details = []
             for line in td[6].text.splitlines():
                 detail = line.strip().split(':')
@@ -19,6 +27,7 @@ class Info(View):
                 })
             response.append({
                 'name': td[0].text,
+                'pending': False,
                 'subject_id': td[1].text,
                 'class_id': td[2].text,
                 'mark': td[3].text,

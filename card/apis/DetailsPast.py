@@ -9,22 +9,22 @@ class DetailsPast(View):
         today = datetime.date.today()
         one_month_ago = today - datetime.timedelta(days=31)
         if request.GET['page'] == '1':
-            stu.request('http://172.31.248.20/accounthisTrjn1.action',
+            stu.request('http://hfut-test.heppy.wang:7002/accounthisTrjn1.action',
                              method='POST',
                              params={
                                  'account': user.card_id,
                                  'inputObject': 'all',
                                  'submit': '+%C8%B7+%B6%A8+'
                              })
-            stu.request('http://172.31.248.20/accounthisTrjn2.action',
+            stu.request('http://hfut-test.heppy.wang:7002/accounthisTrjn2.action',
                              method='POST',
                              params={
                                  'inputStartDate': one_month_ago.strftime('%Y%m%d'),
                                  'inputEndDate': today.strftime('%Y%m%d')
                              })
-            stu.request('http://172.31.248.20/accounthisTrjn3.action', 'POST')
+            stu.request('http://hfut-test.heppy.wang:7002/accounthisTrjn3.action', 'POST')
         data = stu.request(
-            '/http/77726476706e69737468656265737421a1a013d2746126022a50c7fec8/accountconsubBrows.action',
+            'http://hfut-test.heppy.wang:7002/accountconsubBrows.action',
             method='POST',
             params={
                 'inputStartDate': one_month_ago.strftime('%Y%m%d'),

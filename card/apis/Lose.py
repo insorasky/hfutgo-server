@@ -5,7 +5,7 @@ from django.views import View
 
 class Lose(View):
     def get(self, request, stu, user):
-        data = stu.request('http://172.31.248.20/accountDoLoss.action', method='POST', params={
+        data = stu.request('http://hfut-test.heppy.wang:7002/accountDoLoss.action', method='POST', params={
                                    'account': user.card_id,
                                    'passwd': request.GET['password']
                                }).text

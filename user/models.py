@@ -13,10 +13,10 @@ class User(models.Model):
 
 
 class LoginState(models.Model):
-    type = models.IntegerField(max_length=1, db_index=True)  # 正常学生：1，游客：2，封网临时用户：3
+    type = models.IntegerField(db_index=True)  # 正常学生：1，游客：2，封网临时用户：3
     user_id = models.IntegerField()
-    student_id = models.IntegerField()
-    openid = models.CharField(max_length=64)
+    student_id = models.IntegerField(null=True)
+    openid = models.CharField(max_length=64, null=True)
     token = models.UUIDField(db_index=True)
     vpn_ticket = models.TextField()
     at_token = models.TextField()

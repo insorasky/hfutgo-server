@@ -15,14 +15,11 @@ class Schedules(View):
             schedules = []
             if lesson['scheduleText']['dateTimePlaceText']['text']:
                 schedule_texts = lesson['scheduleText']['dateTimePlaceText']['text'].split('; \n')
-                for text in schedule_texts:
-                    schedules.append(analyze(text))
-            teachers = []
-            for teacher in lesson['teacherAssignmentList']:
-                teachers.append({
-                    'name': teacher['teacher']['person']['nameZh'],
-                    'title': teacher['teacher']['title']['name'] if teacher['teacher']['title'] else None
-                })
+                schedules = [analyze(text) for text in schedule_texts]
+            teachers = [{
+                'name': teacher['teacher']['person']['nameZh'],
+                'title': teacher['teacher']['title']['name'] if teacher['teacher']['title'] else None
+            } for teacher in lesson['teacherAssignmentList']]
             lessons.append({
                 'code': lesson['code'],
                 'name': lesson['course']['nameZh'],

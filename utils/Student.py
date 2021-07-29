@@ -22,6 +22,7 @@ URL_GET_AT = URL_ONE_BASE + '/api/auth/oauth/getToken'
 URL_VERIFY_AT = URL_ONE_BASE + '/cas/bosssoft/checkToken'
 URL_USERINFO = 'https://one.hfut.edu.cn/api/center/user/selectUserInfoForHall'
 USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36'
+URL_COOKIES = 'https://webvpn.hfut.edu.cn/wengine-vpn/cookie?method=get&host=%s&scheme=%s'
 
 
 class Student:
@@ -164,3 +165,6 @@ class Student:
             return dict_from_cookiejar(self.session.cookies)[TICKET_NAME]
         except KeyError:
             return None
+
+    def cookies(self, host, scheme):
+        return dict([d.split('=') for d in self.session.get(URL_COOKIES % (host, scheme)).text.split('; ')])
