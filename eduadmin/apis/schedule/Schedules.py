@@ -25,7 +25,7 @@ class Schedules(View):
                 'name': lesson['course']['nameZh'],
                 'schedules': schedules,
                 'classes': lesson['nameZh'],
-                # 'credits': lesson['course']['credit'],
+                'credits': lesson['course']['credits'],
                 'type': lesson['courseType']['name'],
                 'teachers': teachers
             })

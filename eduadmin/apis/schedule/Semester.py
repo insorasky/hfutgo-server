@@ -1,6 +1,8 @@
 from utils.response import get_json_response
 from django.views import View
 from bs4 import BeautifulSoup
+import re
+import json
 
 
 class Semester(View):
@@ -12,19 +14,22 @@ class Semester(View):
                 'Pragma': 'no-cache'
             }
         ).text
-        soup = BeautifulSoup(data, 'lxml').select('#allSemesters > option')
+        s = BeautifulSoup(data, 'lxml')
+        soup = s.select('#allSemesters > option')
         response = []
         default = 0
         for option in soup:
             if option['value']:
                 response.append({
-                    'name': option.text,
-                    'sid': option['value'],
+                    'label': option.text,
+                    'value': option['value'],
                     'default': 'selected' in option.attrs
                 })
                 if 'selected' in option.attrs:
                     default = option['value']
+        details = json.loads(re.search(r'JSON.parse\(([\s\S]*?)\);', str(s.html))[1].replace('\'', '').replace('\\"', '"'))
         return get_json_response({
             'default': default,
-            'semesters': response
+            'semesters': response,
+            'details': {item['id']: item for item in details}
         })
