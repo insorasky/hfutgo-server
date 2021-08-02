@@ -13,7 +13,7 @@ url = [
     '/user/new_user/get_email_code',
     '/user/new_user/verify_email',
     '/user/new_user/verify_phone',
-    '/user/new_user/set_password'
+    '/user/new_user/set_password',
     '/user/forgot/get_code',
     '/user/forgot/get_message',
     '/user/forgot/get_session',
