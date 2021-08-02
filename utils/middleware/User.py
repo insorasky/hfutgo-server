@@ -7,6 +7,7 @@ from hfutgo.settings import DEBUG
 
 url = [
     '/user/login',
+    '/user/guest/login',
     '/others/notice',
     '/user/new_user/get_phone_code',
     '/user/new_user/get_email_code',

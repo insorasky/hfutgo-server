@@ -37,12 +37,14 @@ class Login(View):
                 params=json.dumps(request.GET),
                 data={}
             )
+            student.request('http://jxglstu.hfut.edu.cn/eams5-student/neusoft-sso/login')
             return get_json_response({
                 'ticket': student.vpn_token,
                 'at_token': student.at_token,
                 'token': token,
                 'class_name': info.organization,
-                'name': info.name
+                'name': info.name,
+                'type': 'normal'
             })
         elif status == -2:
             return get_json_response({

@@ -7,5 +7,6 @@ urlpatterns = [
     path('new_user/', include('user.apis.new_user.urls'), name='new_user'),
     path('today_page/', include('user.apis.today.urls'), name='today_page'),
     path('forgot/', include('user.apis.forgot.urls'), name='user_forgot'),
+    path('guest/', include('user.apis.guest.urls'), name='guest'),
     path('logout', Logout.as_view(), name='user_logout')
 ]

@@ -10,6 +10,7 @@ urlpatterns = [
     path('schedule/', include('eduadmin.apis.schedule.urls'), name='eduadmin_schedule'),
     path('login', Login.as_view(), name='eduadmin_login'),
     path('exams', Exams.as_view(), name='eduadmin_exams'),
+    path('score/', include('eduadmin.apis.score.urls'), name='eduadmin_score'),
     path('manager/', include('eduadmin.apis.manager.urls'), name='eduadmin_manager'),
     path('password/', include('eduadmin.apis.password.urls'), name='eduadmin_password'),
 ]
