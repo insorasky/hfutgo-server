@@ -7,8 +7,12 @@ import requests
 class Verify(View):
     def get(self, request):
         data = requests.get(
-            url='https://webvpn.hfut.edu.cn/http/77726476706e69737468656265737421f3f652d22f367d44300d8db9d6562d/cas/password/getTicket?username=%s&strCode=%s&codeRandom=%s'
-                % (request.GET['id'], request.GET['code'], request.GET['random']),
+            url='https://webvpn.hfut.edu.cn/http/77726476706e69737468656265737421f3f652d22f367d44300d8db9d6562d/cas/password/getTicket',
+            params={
+                'username': request.GET['id'],
+                'strCode': request.GET['code'],
+                'codeRandom': request.GET['random']
+            },
             cookies={TICKET_NAME: request.GET['vpn_ticket']}
         ).json()
         if data['code'] == 1:
