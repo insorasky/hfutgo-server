@@ -9,7 +9,13 @@ url_pattern = r'http[s]?:\/\/(?:[a-zA-Z]+)\.hfut\.edu\.cn\/(?:[a-zA-Z]|[0-9]|[$-
 class Article(View):
     def get(self, request, stu, user):
         if re.search(url_pattern, request.GET['url']):
-            data = stu.request(request.GET['url'])
+            data = stu.request(
+                url=request.GET['url'].strip(),
+                headers={
+                    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+                    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:90.0) Gecko/20100101 Firefox/90.0'
+                }
+            )
             if '无法访问此网站' in data.text:
                 return get_json_response('无法访问此网站', 3552)
             soup = BeautifulSoup(data.content, 'lxml').body
