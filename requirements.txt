@@ -11,3 +11,4 @@ sqlparse~=0.4.1
 urllib3~=1.26.2
 beautifulsoup4~=4.9.3
 lxml
+readability-lxml
