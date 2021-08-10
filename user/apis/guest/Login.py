@@ -8,6 +8,7 @@ import uuid
 
 class Login(View):
     def get(self, request):
+        '''
         data = requests.get(
             url='https://api.weixin.qq.com/sns/jscode2session',
             params={
@@ -17,6 +18,13 @@ class Login(View):
                 'grant_type': 'authorization_code'
             }
         ).json()
+        '''
+        data = {
+            'errcode': 0,
+            'openid': 'testopenid' + request.GET['code'],
+            'unionid': 'testunionid' + request.GET['code'],
+            'errmsg': None
+        }
         if data['errcode'] == 0:
             token = uuid.uuid4()
             openid = data['openid']

@@ -13,4 +13,5 @@ urlpatterns = [
     path('score/', include('eduadmin.apis.score.urls'), name='eduadmin_score'),
     path('manager/', include('eduadmin.apis.manager.urls'), name='eduadmin_manager'),
     path('password/', include('eduadmin.apis.password.urls'), name='eduadmin_password'),
+    path('guest/', include('eduadmin.apis.guest.urls'), name='eduadmin_guest'),
 ]

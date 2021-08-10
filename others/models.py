@@ -6,6 +6,22 @@ class Config(models.Model):
     value = models.JSONField()
     time = models.DateTimeField(auto_now_add=True)
 
+    @classmethod
+    def get(cls, item):
+        try:
+            return cls.objects.filter(name=item).first().value
+        except AttributeError:
+            raise AttributeError("Config '%s' not found" % item)
+
+    @classmethod
+    def set(cls, name, value):
+        cls.objects.update_or_create(
+            defaults={
+                'value': value
+            },
+            name=name
+        )
+
 
 class Notice(models.Model):
     text = models.TextField()

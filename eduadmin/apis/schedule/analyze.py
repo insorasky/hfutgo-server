@@ -25,6 +25,8 @@ CLASS_CHINESE = {
 
 def analyze(string):
     strings = string.split(' ')
+    if len(string) < 2:
+        return []
     time_str = strings[0]
     day_str = strings[1]
     class_str = strings[2].split('~')

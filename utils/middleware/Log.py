@@ -10,11 +10,21 @@ class LogMiddleware(MiddlewareMixin):
         if request.path in url:
             return None
         else:
-            print(view_kwargs['user'].student_id)
-            print(request.path)
-            print(request.GET)
-            Log.objects.create(
-                user=view_kwargs['user'].student_id,
-                path=request.path,
-                params=json.dumps(request.GET),
-            )
+            try:
+                print(view_kwargs['user'].student_id)
+                print(request.path)
+                print(request.GET)
+                Log.objects.create(
+                    user=view_kwargs['user'].student_id,
+                    path=request.path,
+                    params=json.dumps(request.GET),
+                )
+            except KeyError:
+                print(view_kwargs['guest'].pk)
+                print(request.path)
+                print(request.GET)
+                Log.objects.create(
+                    user=view_kwargs['guest'].pk,
+                    path=request.path,
+                    params=json.dumps(request.GET),
+                )
