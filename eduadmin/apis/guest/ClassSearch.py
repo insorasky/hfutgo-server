@@ -22,6 +22,7 @@ class ClassSearch(View):
             'classes': [{
                 'name': item['nameZh'],
                 'code': item['code'],
+                'id': item['id'],
                 'grade': item['grade'],
                 'department': item['mngtDepart']['abbrZh']
             } for item in data['data']],

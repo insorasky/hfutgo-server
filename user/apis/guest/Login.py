@@ -8,12 +8,12 @@ import uuid
 
 class Login(View):
     def get(self, request):
-        '''
+
         data = requests.get(
             url='https://api.weixin.qq.com/sns/jscode2session',
             params={
-                'appid': WEIXIN_APPID,
-                'secret': WEIXIN_SECRET,
+                'appid': 'wxa0cf6d472206fa8c',
+                'secret': 'b08be86e5f5934f4d8e6356806f779a1',
                 'js_code': request.GET['code'],
                 'grant_type': 'authorization_code'
             }
@@ -25,13 +25,14 @@ class Login(View):
             'unionid': 'testunionid' + request.GET['code'],
             'errmsg': None
         }
-        if data['errcode'] == 0:
+        '''
+        print(data)
+        if ('errcode' not in data) or (data['errcode'] == 0):
             token = uuid.uuid4()
             openid = data['openid']
-            unionid = data['unionid']
+            session_key = data['session_key']
             guest, success = Guest.objects.update_or_create(
                 defaults={
-                    'unionid': unionid,
                     'nick_name': '',
                     'city': '',
                     'avatar': ''
@@ -41,6 +42,7 @@ class Login(View):
             LoginState.objects.create(
                 user_id=guest.pk,
                 student_id=None,
+                session_key=session_key,
                 type=2,
                 token=token,
                 vpn_ticket="",

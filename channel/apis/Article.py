@@ -32,7 +32,7 @@ class Article(View):
                 })
             return get_json_response({
                 'html': re.search(r'<html><body>(.*)</body></html>', html)[1],
-                'text': BeautifulSoup(html, 'lxml').text,
+                'text': soup.text,
                 'title': doc.title()
             })
         else:

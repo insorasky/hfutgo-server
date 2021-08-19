@@ -17,6 +17,7 @@ class LoginState(models.Model):
     user_id = models.IntegerField()
     student_id = models.IntegerField(null=True)
     openid = models.CharField(max_length=64, null=True)
+    session_key = models.CharField(max_length=64, null=True)
     token = models.UUIDField(db_index=True)
     vpn_ticket = models.TextField()
     at_token = models.TextField()
@@ -27,7 +28,6 @@ class LoginState(models.Model):
 
 class Guest(models.Model):
     openid = models.CharField(max_length=64)
-    unionid = models.CharField(max_length=64)
     nick_name = models.TextField()
     city = models.TextField()
     avatar = models.TextField()
