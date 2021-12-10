@@ -78,13 +78,11 @@ WSGI_APPLICATION = 'hfutgo.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'hfut',
-        'USER': 'root',
-        'PASSWORD': 'root',
-        'OPTIONS': {
-            "unix_socket": "/Applications/MAMP/tmp/mysql/mysql.sock",
-            'charset': 'utf8mb4',
-        }
+        'NAME': 'hfutgo',
+        'USER': 'hfutgo',
+        'PASSWORD': 'hfutgo',
+        'HOST': '192.168.1.132',
+        'PORT': '3307'
     }
 }
 

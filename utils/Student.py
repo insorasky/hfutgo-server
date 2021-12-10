@@ -24,6 +24,10 @@ URL_USERINFO = 'https://one.hfut.edu.cn/api/center/user/selectUserInfoForHall'
 USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36'
 URL_COOKIES = 'https://webvpn.hfut.edu.cn/wengine-vpn/cookie?method=get&host=%s&scheme=%s'
 
+URL_REPLACE_LIST = {
+    'http://172.31.248.20': 'http://redirect.heppy.wang',
+    'http://jxglstu.hfut.edu.cn': 'http://redirect.heppy.wang'
+}
 
 class Student:
 
@@ -108,12 +112,23 @@ class Student:
         if headers is None:
             headers = {}
         url = url if url[0] == '/' else encrypUrl(url.split('://')[0], url)
+        for origin, target in URL_REPLACE_LIST.items():
+            if encrypUrl(origin.split('://')[0], origin) in url:
+                url = url.replace(encrypUrl(origin.split('://')[0], origin), encrypUrl(target.split('://')[0], target))
         if '77726476706e69737468656265737421fff944d22f367d44300d8db9d6562d' in url:
             headers.update({'Authorization': 'Bearer ' + self.__at})
         if data is not None and 'Content-Type' not in headers:
             data = json.dumps(data)
-        return self.session.request(method=method, url=URL_VPN_BASE + url, params=params, data=data,
-                                    headers=headers, allow_redirects=allow_redirects, timeout=timeout, json=json)
+        resp = self.session.request(method=method, url=URL_VPN_BASE + url, params=params, data=data,
+                                    headers=headers, allow_redirects=False, timeout=timeout, json=json)
+        if (resp.status_code == 301 or resp.status_code == 302) and allow_redirects:
+            location = resp.headers['Location']
+            print(location[0:26])
+            if location[0:26] == URL_VPN_BASE:
+                location = location.replace(URL_VPN_BASE, '')
+            return self.request(location, 'GET', allow_redirects=allow_redirects, timeout=timeout)
+        else:
+            return resp
 
     @property
     def userinfo(self):

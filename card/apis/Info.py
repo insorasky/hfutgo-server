@@ -8,11 +8,9 @@ import re
 class Info(View):
     def get(self, request, stu: Student, user):
         try:
-            req = stu.request('http://hfut-test.heppy.wang:7002/ahdxdrPortalHome.action', timeout=7, allow_redirects=False)
-            req = stu.request(req.headers['Location'])
-            req = stu.request(req.headers['Location'].replace('172.31.'))
+            stu.request('http://172.31.248.20/ahdxdrPortalHome.action', timeout=7)
             data = stu.request(
-                'http://hfut-test.heppy.wang:7002/accountcardUser.action').text
+                'http://172.31.248.20/accountcardUser.action').text
             soup = BeautifulSoup(data, 'lxml').select('.tttt > tr:nth-child(1) > th:nth-child(1) > table:nth-child(1)')[0]
             balance_text = soup.select('tr:nth-child(12) > td:nth-child(2)')[0].text
             balance_data = re.match(r'(.*)元（卡余额）(.*)元\(当前过渡余额\)(.*)元\(上次过渡余额\)', balance_text)
@@ -28,5 +26,6 @@ class Info(View):
                 'freeze': soup.select('tr:nth-child(11) > td:nth-child(6) > div:nth-child(1)')[0].text.strip(),
                 'lost': soup.select('tr:nth-child(12) > td:nth-child(6)')[0].text.strip()
             })
-        except BaseException:
+        except BaseException as e:
+            print(e)
             return get_json_response('学校维护中', 3001)
