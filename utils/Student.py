@@ -25,8 +25,8 @@ USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTM
 URL_COOKIES = 'https://webvpn.hfut.edu.cn/wengine-vpn/cookie?method=get&host=%s&scheme=%s'
 
 URL_REPLACE_LIST = {
-    'http://172.31.248.20': 'http://redirect.heppy.wang',
-    'http://jxglstu.hfut.edu.cn': 'http://redirect.heppy.wang'
+    'http://172.31.248.20': '',
+    'http://jxglstu.hfut.edu.cn': ''
 }
 
 class Student:
@@ -109,6 +109,7 @@ class Student:
         return True
 
     def request(self, url, method='GET', params=None, data=None, headers=None, allow_redirects=True, timeout=7, json=None):
+        print(url)
         if headers is None:
             headers = {}
         url = url if url[0] == '/' else encrypUrl(url.split('://')[0], url)
